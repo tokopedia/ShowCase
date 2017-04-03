@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<View xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/circle_size"
+    android:layout_height="@dimen/circle_size"
+    android:layout_margin="@dimen/circle_margin"/>

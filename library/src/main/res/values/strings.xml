@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">tutors</string>
+    <string name="previous">Kembali</string>
+    <string name="next">Berikutnya</string>
+    <string name="finish">Selesai</string>
+
+    <string name="previous2">&lt;</string>
+    <string name="next2">&gt;</string>
+    <string name="finish2">OK</string>
+</resources>
