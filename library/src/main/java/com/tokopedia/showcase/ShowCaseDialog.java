@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class ShowCaseDialog extends DialogFragment {
     private static final String ARG_BUILDER = "BUILDER";
 
-    private ArrayList<TutorObject> tutorsList;
+    private ArrayList<ShowCaseObject> tutorsList;
     private int currentTutorIndex;
     private ShowCaseBuilder builder;
 
@@ -115,29 +115,35 @@ public class ShowCaseDialog extends DialogFragment {
         }
     }
 
-    public static class TutorObject {
-        public TutorObject(@Nullable View view,@Nullable String title, String text ) {
+    public static class ShowCaseObject {
+        public ShowCaseObject(@Nullable View view, @Nullable String title, String text ) {
             this(view, title, text, ShowCaseContentPosition.UNDEFINED);
         }
-        public TutorObject(@Nullable View view, @Nullable String title,
-                           String text,ShowCaseContentPosition showCaseContentPosition) {
+        public ShowCaseObject(@Nullable View view, @Nullable String title,
+                              String text, ShowCaseContentPosition showCaseContentPosition) {
+            this(view, title, text, showCaseContentPosition, 0);
+        }
+        public ShowCaseObject(@Nullable View view, @Nullable String title,
+                              String text, ShowCaseContentPosition showCaseContentPosition,
+                              int tintBackgroundColor) {
             this.view = view;
             this.title = title;
             this.text = text;
             this.showCaseContentPosition = showCaseContentPosition;
+            this.tintBackgroundColor = tintBackgroundColor;
         }
         ShowCaseContentPosition showCaseContentPosition;
         View view;
         String title;
         String text;
-
+        int tintBackgroundColor;
     }
 
-    public void show (Activity activity, final ArrayList<TutorObject> tutorList) {
+    public void show (Activity activity, final ArrayList<ShowCaseObject> tutorList) {
         show (activity, tutorList, 0);
     }
 
-    public void show (Activity activity, final ArrayList<TutorObject> tutorList, int indexToShow) {
+    public void show (Activity activity, final ArrayList<ShowCaseObject> tutorList, int indexToShow) {
         this.tutorsList = tutorList;
         if (indexToShow < 0 || indexToShow >= tutorList.size()) {
             indexToShow = 0;
@@ -148,30 +154,34 @@ public class ShowCaseDialog extends DialogFragment {
         final String title = tutorList.get(currentTutorIndex).title;
         final String text = tutorList.get(currentTutorIndex).text;
         final ShowCaseContentPosition showCaseContentPosition = tutorList.get(currentTutorIndex).showCaseContentPosition;
+        final int tintBackgroundColor = tutorList.get(currentTutorIndex).tintBackgroundColor;
         FragmentManager fm = activity.getFragmentManager();
         if (!isVisible()) {
             show(fm, this.getClass().getName());
         }
 
         if (view == null) {
-            layoutShowTutorial(null, title, text, showCaseContentPosition);
+            layoutShowTutorial(null, title, text, showCaseContentPosition, tintBackgroundColor);
         }
         else {
             view.post(new Runnable() {
                 @Override
                 public void run() {
-                    layoutShowTutorial(view, title, text, showCaseContentPosition);
+                    layoutShowTutorial(view, title, text, showCaseContentPosition, tintBackgroundColor);
                 }
             });
         }
     }
 
-    private void layoutShowTutorial(View view,String title, String text, ShowCaseContentPosition showCaseContentPosition){
+    private void layoutShowTutorial(View view,String title, String text,
+                                    ShowCaseContentPosition showCaseContentPosition,
+                                    int tintBackgroundColor){
         final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
         if (layout == null) {
             return;
         }
-        layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(), showCaseContentPosition);
+        layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
+                showCaseContentPosition, tintBackgroundColor);
     }
 
     public void close() {

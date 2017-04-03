@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -15,6 +16,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -162,7 +164,8 @@ public class ShowCaseLayout extends FrameLayout {
                              String text,
                              int currentTutorIndex,
                              int tutorsListSize,
-                             ShowCaseContentPosition showCaseContentPosition) {
+                             ShowCaseContentPosition showCaseContentPosition,
+                             int tintBackgroundColor) {
         boolean isStart = currentTutorIndex == 0;
 
         this.isLast = currentTutorIndex == tutorsListSize - 1;
@@ -215,9 +218,28 @@ public class ShowCaseLayout extends FrameLayout {
             final int[] location = new int[2];
             this.lastTutorialView = view;
             view.getLocationInWindow(location);
-            view.setDrawingCacheEnabled(true);
 
-            this.bitmap = view.getDrawingCache();
+            view.setDrawingCacheEnabled(true);
+            view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+            if (tintBackgroundColor == 0) {
+                this.bitmap = view.getDrawingCache();
+            }
+            else {
+                Bitmap bitmapTemp = view.getDrawingCache();
+
+                Bitmap bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
+                        view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+                Canvas bigCanvas = new Canvas(bigBitmap);
+                bigCanvas.drawColor(tintBackgroundColor);
+                Paint paint = new Paint();
+                bigCanvas.drawBitmap(bitmapTemp, 0f, 0f, paint);
+
+                this.bitmap = bigBitmap;
+            }
+
+
+//            this.bitmap = view.getDrawingCache();
+
             this.highlightLocX = location[0];
             this.highlightLocY = location[1] - getStatusBarHeight();
 

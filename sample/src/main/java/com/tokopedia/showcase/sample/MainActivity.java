@@ -1,5 +1,6 @@
 package com.tokopedia.showcase.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -24,11 +25,12 @@ public class MainActivity extends AppCompatActivity
 //    private Button buttonShow;
     private FloatingActionButton fab;
 
-    private ArrayList<ShowCaseDialog.TutorObject> showCaseList;
+    private ArrayList<ShowCaseDialog.ShowCaseObject> showCaseList;
 
     private ShowCaseDialog showCaseDialog;
     private RecyclerView recyclerView;
     private LinearLayoutManager llm;
+    private SampleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,47 +73,58 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView.setLayoutManager(llm);
 
-        SampleAdapter adapter = new SampleAdapter(Util.getSampleData());
+        adapter = new SampleAdapter(Util.getSampleData());
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View view) {
         showCaseList = new ArrayList<>();
-        showCaseList.add(new ShowCaseDialog.TutorObject(
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
                 toolbar,
                 null,
                 "Above is the <b>toolbar</b>.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
-        showCaseList.add(new ShowCaseDialog.TutorObject(
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
                 fab,
                 "This is example Title",
                 "This description point to <font color=\"#FF0000\"> Floating Action Button </font> on the right.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere.",
                 ShowCaseContentPosition.LEFT));
-        showCaseList.add(new ShowCaseDialog.TutorObject(
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
                 null,
                 null,
                 "This is example without anchored View.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
 
-        int firstVisiblePosition = llm.findFirstVisibleItemPosition();
-        View itemView = recyclerView.getChildAt(firstVisiblePosition);
+        int completelyVisiblePosition = llm.findFirstCompletelyVisibleItemPosition();
+        View itemView = llm.findViewByPosition(completelyVisiblePosition);
 
-        showCaseList.add(new ShowCaseDialog.TutorObject(
-                itemView,
-                null,
-                "This is item in the recyclerView"));
+        if (itemView!= null) {
+            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                    itemView,
+                    null,
+                    "This is item in the recyclerView",
+                    ShowCaseContentPosition.UNDEFINED,
+                    Color.WHITE));
 
-        showCaseList.add(new ShowCaseDialog.TutorObject(
-                itemView.findViewById(R.id.iv_icon),
-                null,
-                "This is icon"));
+            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                    itemView.findViewById(R.id.iv_icon),
+                    null,
+                    "This is icon"));
 
-        showCaseList.add(new ShowCaseDialog.TutorObject(
-                itemView.findViewById(R.id.iv_fav),
-                null,
-                "This is icon (2)",
-                ShowCaseContentPosition.LEFT));
+            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                    itemView.findViewById(R.id.tv_title),
+                    "Color Description",
+                    "This describe the color. The white background is written in code. If it is not defined, default will be transparent",
+                    ShowCaseContentPosition.UNDEFINED,
+                    Color.WHITE));
+
+            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                    itemView.findViewById(R.id.iv_fav),
+                    null,
+                    "This is icon (2)",
+                    ShowCaseContentPosition.LEFT,
+                    Color.WHITE));
+        }
 
         showCaseDialog.show(this, showCaseList);
     }
-
 }
