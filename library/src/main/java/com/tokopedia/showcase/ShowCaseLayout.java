@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -16,7 +15,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -62,7 +60,7 @@ public class ShowCaseLayout extends FrameLayout {
     private int highlightLocX;
     private int highlightLocY;
 
-    // determined if this is last chain in tutorial
+    // determined if this is last chain
     private boolean isLast;
 
     // path for arrow
@@ -236,9 +234,6 @@ public class ShowCaseLayout extends FrameLayout {
 
                 this.bitmap = bigBitmap;
             }
-
-
-//            this.bitmap = view.getDrawingCache();
 
             this.highlightLocX = location[0];
             this.highlightLocY = location[1] - getStatusBarHeight();

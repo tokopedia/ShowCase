@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity
 
     private Toolbar toolbar;
 
-//    private Button buttonHello;
-//    private TextView textDescription;
-//    private Button buttonShow;
     private FloatingActionButton fab;
 
     private ArrayList<ShowCaseDialog.ShowCaseObject> showCaseList;
