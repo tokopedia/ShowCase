@@ -3,10 +3,6 @@ package com.tokopedia.showcase.sample;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Hendry on 4/3/2017.
- */
-
 public class Util {
     public static List<SampleItem> getSampleData(){
         List<SampleItem> sampleItems = new ArrayList<>();

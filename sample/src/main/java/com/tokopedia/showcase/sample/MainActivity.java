@@ -22,12 +22,8 @@ public class MainActivity extends AppCompatActivity
 
     private FloatingActionButton fab;
 
-    private ArrayList<ShowCaseDialog.ShowCaseObject> showCaseList;
-
     private ShowCaseDialog showCaseDialog;
-    private RecyclerView recyclerView;
     private LinearLayoutManager llm;
-    private SampleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,19 +60,19 @@ public class MainActivity extends AppCompatActivity
         View buttonShowCase = findViewById(R.id.button_show_case);
         buttonShowCase.setOnClickListener(this);
 
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         llm = new LinearLayoutManager(MainActivity.this,
                 LinearLayoutManager.VERTICAL,false);
 
         recyclerView.setLayoutManager(llm);
 
-        adapter = new SampleAdapter(Util.getSampleData());
+        SampleAdapter adapter = new SampleAdapter(Util.getSampleData());
         recyclerView.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View view) {
-        showCaseList = new ArrayList<>();
+        ArrayList <ShowCaseDialog.ShowCaseObject> showCaseList = new ArrayList<>();
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
                 toolbar,
                 null,
