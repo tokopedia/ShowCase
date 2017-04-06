@@ -1,0 +1,99 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+def pomConfig = {
+    licenses {
+        license {
+            name LICENSE_NAME
+            url LICENSE_URL
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id DEVELOPER_ID
+            name DEVELOPER_NAME
+            email DEVELOPER_EMAIL
+        }
+    }
+}
+publishing {
+    publications {
+        tkpdPublish(MavenPublication) {
+            artifact sourcesJar
+            artifact javadocJar
+            groupId PUBLISHED_GROUP_ID
+            artifactId ARTIFACT
+            version LIBRARY_VERSION
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', LIBRARY_DESC)
+                root.appendNode('name', LIBRARY_NAME)
+                root.appendNode('url', SITE_URL)
+                root.children().last() + pomConfig
+
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                configurations.compile.allDependencies.each {
+                    if (it.group != null && it.name != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+} else { // Java libraries
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = bintray_user
+    key = bintray_api_key
+    publications = ['tkpdPublish']
+    pkg {
+        repo = BINTRAY_REPO
+        name = BINTRAY_NAME
+        desc = LIBRARY_DESC
+        websiteUrl = SITE_URL
+        vcsUrl = GIT_URL
+        userOrg = bintray_org
+        licenses = ['Apache-2.0']
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            name = LIBRARY_VERSION
+            gpg {
+                sign = true
+            }
+        }
+    }
+}
