@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity
                 .spacingRes(R.dimen.spacing_normal)
                 .backgroundContentColorRes(R.color.blue)
                 .circleIndicatorBackgroundDrawableRes(R.drawable.selector_circle_green)
-                .prevStringRes(R.string.previous2)
-                .nextStringRes(R.string.next2)
-                .finishStringRes(R.string.finish2)
+                .prevStringRes(R.string.previous)
+                .nextStringRes(R.string.next)
+                .finishStringRes(R.string.finish)
                 .useCircleIndicator(true)
                 .clickable(true)
                 .build();
