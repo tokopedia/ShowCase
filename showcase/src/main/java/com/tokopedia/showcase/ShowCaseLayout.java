@@ -8,6 +8,9 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -408,7 +411,7 @@ public class ShowCaseLayout extends FrameLayout {
                 LayoutInflater.from(context).inflate(this.layoutRes, this, false);
 
         View viewGroupTutorContent = viewGroup.findViewById(R.id.view_group_tutor_content);
-        viewGroupTutorContent.setBackgroundColor(this.backgroundContentColor);
+        setBackgroundColor(viewGroupTutorContent, this.backgroundContentColor);
 
         textViewTitle = (TextView) viewGroupTutorContent.findViewById(R.id.text_title);
 
@@ -455,6 +458,16 @@ public class ShowCaseLayout extends FrameLayout {
         this.addView(viewGroup);
     }
 
+    public static void setBackgroundColor(View v, int color){
+        Drawable background = v.getBackground();
+        if (background instanceof ShapeDrawable) {
+            ShapeDrawable shapeDrawable = (ShapeDrawable)background;
+            shapeDrawable.getPaint().setColor(color);
+        } else if (background instanceof GradientDrawable) {
+            GradientDrawable gradientDrawable = (GradientDrawable)background;
+            gradientDrawable.setColor(color);
+        }
+    }
 
     private void moveViewBasedHighlight(int highlightXstart,
                                         int highlightYstart,
