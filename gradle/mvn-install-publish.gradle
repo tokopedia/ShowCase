@@ -22,6 +22,7 @@ publishing {
         tkpdPublish(MavenPublication) {
             artifact sourcesJar
             artifact javadocJar
+            artifact("$buildDir/outputs/aar/${project.getName()}-release.aar")
             groupId PUBLISHED_GROUP_ID
             artifactId ARTIFACT
             version LIBRARY_VERSION
