@@ -262,6 +262,10 @@ public class ShowCaseLayout extends FrameLayout {
         this.setVisibility(View.VISIBLE);
     }
 
+    public void hideTutorial(){
+        this.setVisibility(View.INVISIBLE);
+    }
+
     private void makeCircleIndicator(boolean hasMoreOneCircle,
                                      int currentTutorIndex,
                                      int tutorsListSize){

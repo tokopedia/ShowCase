@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/button_show_case"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_case"
+                android:layout_margin="8dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/tv_example1"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:text="Example Text1"
+                android:background="#4499FF"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_example2"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:text="Example Text2"
+                android:background="#FF9900"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_example3"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#FF0000"
+                android:text="Example Text3"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_example4"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#FF00FF"
+                android:text="Example Text4"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:id="@+id/tv_example5"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#0000FF"
+                android:text="Example Text5"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:id="@+id/tv_example6"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#00FF00"
+                android:text="Example Text6"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_search"
+        android:tint="@android:color/white"/>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -16,7 +16,7 @@ import java.util.List;
 
 public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder>{
 
-    List<SampleItem> sampleItemList;
+    private List<SampleItem> sampleItemList;
     public SampleAdapter (List<SampleItem> sampleItemList){
         this.sampleItemList = sampleItemList;
     }
@@ -58,7 +58,6 @@ public class SampleAdapter extends RecyclerView.Adapter<SampleAdapter.ViewHolder
             textViewTitle = (TextView) itemView.findViewById(R.id.tv_title);
             textViewDesc = (TextView) itemView.findViewById(R.id.tv_desc);
         }
-
     }
 
 }

@@ -1,37 +1,41 @@
 package com.tokopedia.showcase.sample;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.tokopedia.showcase.ShowCaseBuilder;
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
-import com.tokopedia.showcase.ShowCaseBuilder;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity
-        implements View.OnClickListener {
+public class ScrollShowCaseActivity extends AppCompatActivity
+        implements View.OnClickListener{
 
     private Toolbar toolbar;
 
     private FloatingActionButton fab;
 
     private ShowCaseDialog showCaseDialog;
-    private LinearLayoutManager llm;
 
-    public static final String SHOWCASE_TAG = "sample_showcase_tag";
+    public static final String SHOWCASE_TAG = "scroll_showcase_tag";
+    private View text1;
+    private View text2;
+    private View text3;
+    private View text4;
+    private View text5;
+    private View text6;
+    private NestedScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_scroll_showcase);
 
         initViews();
         initShowCaseDialog();
@@ -59,25 +63,18 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         this.fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ScrollShowCaseActivity.class);
-                startActivity(intent);
-            }
-        });
 
         View buttonShowCase = findViewById(R.id.button_show_case);
         buttonShowCase.setOnClickListener(this);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        llm = new LinearLayoutManager(MainActivity.this,
-                LinearLayoutManager.VERTICAL,false);
+        scrollView = (NestedScrollView) findViewById(R.id.scrollView);
 
-        recyclerView.setLayoutManager(llm);
-
-        SampleAdapter adapter = new SampleAdapter(Util.getSampleData());
-        recyclerView.setAdapter(adapter);
+        text1 = findViewById(R.id.tv_example1);
+        text2 = findViewById(R.id.tv_example2);
+        text3 = findViewById(R.id.tv_example3);
+        text4 = findViewById(R.id.tv_example4);
+        text5 = findViewById(R.id.tv_example5);
+        text6 = findViewById(R.id.tv_example6);
     }
 
     @Override
@@ -109,37 +106,53 @@ public class MainActivity extends AppCompatActivity
                 null,
                 "This is example without anchored View.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
 
-        int completelyVisiblePosition = llm.findFirstCompletelyVisibleItemPosition();
-        View itemView = llm.findViewByPosition(completelyVisiblePosition);
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text1,
+                null,
+                "Text Example 1",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
 
-        if (itemView!= null) {
-            // use background white
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                    itemView,
-                    null,
-                    "This is item in the recyclerView",
-                    ShowCaseContentPosition.UNDEFINED,
-                    Color.WHITE));
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text2,
+                null,
+                "Text Example 2",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                    itemView.findViewById(R.id.iv_icon),
-                    null,
-                    "This is icon"));
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text3,
+                null,
+                "Text Example 3",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                    itemView.findViewById(R.id.tv_title),
-                    "Color Description",
-                    "This describe the color. The white background is written in code. If it is not defined, default will be transparent",
-                    ShowCaseContentPosition.UNDEFINED,
-                    Color.WHITE));
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text4,
+                null,
+                "Text Example 4",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                    itemView.findViewById(R.id.iv_fav),
-                    null,
-                    "This is icon (2)",
-                    ShowCaseContentPosition.LEFT,
-                    Color.WHITE));
-        }
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text5,
+                null,
+                "Text Example 5",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
+
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text6,
+                null,
+                "Text Example 6",
+                ShowCaseContentPosition.UNDEFINED,
+                Color.WHITE,
+                scrollView));
 
         // make the dialog show
         showCaseDialog.show(this,SHOWCASE_TAG,  showCaseList);
