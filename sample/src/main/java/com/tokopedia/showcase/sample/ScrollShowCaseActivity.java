@@ -11,6 +11,7 @@ import android.view.View;
 import com.tokopedia.showcase.ShowCaseBuilder;
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
+import com.tokopedia.showcase.ShowCasePreference;
 
 import java.util.ArrayList;
 
@@ -81,8 +82,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
     public void onClick(View view) {
         // logic to make this dialog only shown first time
         // uncomment below to make it work
-        /*
-        if (showCaseDialog.hasShown(this,SHOWCASE_TAG)) {
+        /*if (ShowCasePreference.hasShown(this,SHOWCASE_TAG)) {
             return;
         }*/
 
@@ -111,7 +111,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 1",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
@@ -119,7 +119,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 2",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
@@ -127,7 +127,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 3",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
@@ -135,7 +135,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 4",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
@@ -143,7 +143,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 5",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
@@ -151,7 +151,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 null,
                 "Text Example 6",
                 ShowCaseContentPosition.UNDEFINED,
-                Color.WHITE,
+                0,
                 scrollView));
 
         // make the dialog show

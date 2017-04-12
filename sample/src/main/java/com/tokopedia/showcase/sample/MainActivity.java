@@ -13,6 +13,7 @@ import android.view.View;
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
 import com.tokopedia.showcase.ShowCaseBuilder;
+import com.tokopedia.showcase.ShowCasePreference;
 
 import java.util.ArrayList;
 
@@ -84,8 +85,7 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View view) {
         // logic to make this dialog only shown first time
         // uncomment below to make it work
-        /*
-        if (showCaseDialog.hasShown(this,SHOWCASE_TAG)) {
+        /*if (ShowCasePreference.hasShown(this,SHOWCASE_TAG)) {
             return;
         }*/
 
