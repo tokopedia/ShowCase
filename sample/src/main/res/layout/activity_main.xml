@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_search"
+        app:srcCompat="@android:drawable/ic_media_next"
         android:tint="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

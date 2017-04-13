@@ -64,43 +64,62 @@
                 android:textSize="40sp"
                 android:textColor="@android:color/white"/>
 
-            <TextView
-                android:id="@+id/tv_example4"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="#FF00FF"
-                android:text="Example Text4"
-                android:gravity="center"
-                android:textSize="40sp"
-                android:textColor="@android:color/white"/>
-            <TextView
-                android:id="@+id/tv_example5"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:background="#0000FF"
-                android:text="Example Text5"
-                android:gravity="center"
-                android:textSize="40sp"
-                android:textColor="@android:color/white"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_example4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="#FF00FF"
+                    android:text="Example Text4"
+                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:id="@+id/tv_example5"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:background="#0000FF"
+                    android:text="Example Text5"
+                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:textColor="@android:color/white"/>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_example6"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
                 android:background="#00FF00"
+                android:text="Example Text6"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_example7"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="#AA5500"
+                android:text="Example Text6"
+                android:gravity="center"
+                android:textSize="40sp"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_example8"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="#AA00FF"
                 android:text="Example Text6"
                 android:gravity="center"
                 android:textSize="40sp"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        android:tint="@android:color/white"/>
 
 </android.support.design.widget.CoordinatorLayout>

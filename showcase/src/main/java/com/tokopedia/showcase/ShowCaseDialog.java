@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class ShowCaseDialog extends DialogFragment {
     private static final String ARG_BUILDER = "BUILDER";
-    public static final int DELAY_SCROLLING = 500;
+    public static final int DELAY_SCROLLING = 350;
     public static final String TAG = ShowCaseDialog.class.getSimpleName();
 
     private ArrayList<ShowCaseObject> tutorsList;
@@ -234,7 +234,9 @@ public class ShowCaseDialog extends DialogFragment {
                     public void run() {
                         if (viewGroup instanceof ScrollView) {
                             ScrollView scrollView = (ScrollView) viewGroup;
-                            scrollView.smoothScrollTo(0, viewToFocus.getTop());
+                            int relativeLocation[] = new int[2];
+                            ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
+                            scrollView.smoothScrollTo(0, relativeLocation[1]);
                             scrollView.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
@@ -244,7 +246,9 @@ public class ShowCaseDialog extends DialogFragment {
                         }
                         else if (viewGroup instanceof NestedScrollView){
                             NestedScrollView scrollView = (NestedScrollView) viewGroup;
-                            scrollView.smoothScrollTo(0, viewToFocus.getTop());
+                            int relativeLocation[] = new int[2];
+                            ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
+                            scrollView.smoothScrollTo(0, relativeLocation[1]);
                             scrollView.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {

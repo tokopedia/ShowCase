@@ -20,8 +20,6 @@ public class ScrollShowCaseActivity extends AppCompatActivity
 
     private Toolbar toolbar;
 
-    private FloatingActionButton fab;
-
     private ShowCaseDialog showCaseDialog;
 
     public static final String SHOWCASE_TAG = "scroll_showcase_tag";
@@ -31,6 +29,8 @@ public class ScrollShowCaseActivity extends AppCompatActivity
     private View text4;
     private View text5;
     private View text6;
+    private View text7;
+    private View text8;
     private NestedScrollView scrollView;
 
     @Override
@@ -63,8 +63,6 @@ public class ScrollShowCaseActivity extends AppCompatActivity
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        this.fab = (FloatingActionButton) findViewById(R.id.fab);
-
         View buttonShowCase = findViewById(R.id.button_show_case);
         buttonShowCase.setOnClickListener(this);
 
@@ -76,6 +74,8 @@ public class ScrollShowCaseActivity extends AppCompatActivity
         text4 = findViewById(R.id.tv_example4);
         text5 = findViewById(R.id.tv_example5);
         text6 = findViewById(R.id.tv_example6);
+        text7 = findViewById(R.id.tv_example7);
+        text8 = findViewById(R.id.tv_example8);
     }
 
     @Override
@@ -87,25 +87,6 @@ public class ScrollShowCaseActivity extends AppCompatActivity
         }*/
 
         ArrayList <ShowCaseDialog.ShowCaseObject> showCaseList = new ArrayList<>();
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                toolbar,
-                null,
-                "Above is the <b>toolbar</b>.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
-
-        // using title
-        // use position to left
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                fab,
-                "This is example Title",
-                "This description point to <font color=\"#FF0000\"> Floating Action Button </font> on the right.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere.",
-                ShowCaseContentPosition.LEFT));
-
-        // without using views
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
-                null,
-                null,
-                "This is example without anchored View.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
-
         showCaseList.add(new ShowCaseDialog.ShowCaseObject(
                 text1,
                 null,
@@ -150,6 +131,22 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 text6,
                 null,
                 "Text Example 6",
+                ShowCaseContentPosition.UNDEFINED,
+                0,
+                scrollView));
+
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text7,
+                null,
+                "Text Example 7",
+                ShowCaseContentPosition.UNDEFINED,
+                0,
+                scrollView));
+
+        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+                text8,
+                null,
+                "Text Example 8",
                 ShowCaseContentPosition.UNDEFINED,
                 0,
                 scrollView));

@@ -8,9 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -415,7 +412,7 @@ public class ShowCaseLayout extends FrameLayout {
                 LayoutInflater.from(context).inflate(this.layoutRes, this, false);
 
         View viewGroupTutorContent = viewGroup.findViewById(R.id.view_group_tutor_content);
-        setBackgroundColor(viewGroupTutorContent, this.backgroundContentColor);
+        ViewHelper.setBackgroundColor(viewGroupTutorContent, this.backgroundContentColor);
 
         textViewTitle = (TextView) viewGroupTutorContent.findViewById(R.id.text_title);
 
@@ -462,17 +459,6 @@ public class ShowCaseLayout extends FrameLayout {
         this.addView(viewGroup);
     }
 
-    public static void setBackgroundColor(View v, int color){
-        Drawable background = v.getBackground();
-        if (background instanceof ShapeDrawable) {
-            ShapeDrawable shapeDrawable = (ShapeDrawable)background;
-            shapeDrawable.getPaint().setColor(color);
-        } else if (background instanceof GradientDrawable) {
-            GradientDrawable gradientDrawable = (GradientDrawable)background;
-            gradientDrawable.setColor(color);
-        }
-    }
-
     private void moveViewBasedHighlight(int highlightXstart,
                                         int highlightYstart,
                                         int highlightXend,
@@ -488,8 +474,14 @@ public class ShowCaseLayout extends FrameLayout {
                 showCaseContentPosition = ShowCaseContentPosition.RIGHT;
             } else if (highlightXstart >= widthCenter) {
                 showCaseContentPosition = ShowCaseContentPosition.LEFT;
-            } else { // not fit anywhere, put to bottom
-                showCaseContentPosition = ShowCaseContentPosition.BOTTOM;
+            } else { // not fit anywhere
+                // if bottom is bigger, put to bottom, else put it on top
+                if ((this.getHeight() - highlightYend) > highlightYstart) {
+                    showCaseContentPosition = ShowCaseContentPosition.BOTTOM;
+                }
+                else {
+                    showCaseContentPosition = ShowCaseContentPosition.TOP;
+                }
             }
         }
 
@@ -659,15 +651,6 @@ public class ShowCaseLayout extends FrameLayout {
         }
         this.lastTutorialView = null;
         this.viewPaint = null;
-    }
-
-    private void setCache(boolean isCache) {
-        if (isCache) {
-
-        }
-        else {
-
-        }
     }
 
     private int getStatusBarHeight() {
