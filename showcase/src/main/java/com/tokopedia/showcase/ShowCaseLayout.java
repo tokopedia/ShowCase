@@ -524,13 +524,21 @@ public class ShowCaseLayout extends FrameLayout {
                 this.viewGroup.setLayoutParams(layoutParams);
 
                 int highLightCenterY = (highlightYend + highlightYstart)/2;
-                path = new Path();
-                path.moveTo(highlightXend + this.arrowMargin, highLightCenterY);
-                path.lineTo(highlightXend+this.spacing + this.arrowMargin,
-                        highLightCenterY - arrowWidth / 2);
-                path.lineTo(highlightXend+this.spacing + this.arrowMargin,
-                        highLightCenterY + arrowWidth / 2);
-                path.close();
+
+                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
+
+                if (recalcArrowWidth == 0) {
+                    path = null;
+                }
+                else {
+                    path = new Path();
+                    path.moveTo(highlightXend + this.arrowMargin, highLightCenterY);
+                    path.lineTo(highlightXend + this.spacing + this.arrowMargin,
+                            highLightCenterY - arrowWidth / 2);
+                    path.lineTo(highlightXend + this.spacing + this.arrowMargin,
+                            highLightCenterY + arrowWidth / 2);
+                    path.close();
+                }
             }
             break;
             case LEFT: {
@@ -559,13 +567,19 @@ public class ShowCaseLayout extends FrameLayout {
                 this.viewGroup.setLayoutParams(layoutParams);
 
                 int highLightCenterY = (highlightYend + highlightYstart)/2;
-                path = new Path();
-                path.moveTo(highlightXstart - this.arrowMargin, highLightCenterY);
-                path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
-                        highLightCenterY - arrowWidth / 2);
-                path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
-                        highLightCenterY + arrowWidth / 2);
-                path.close();
+                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
+                if (recalcArrowWidth == 0) {
+                    path = null;
+                }
+                else {
+                    path = new Path();
+                    path.moveTo(highlightXstart - this.arrowMargin, highLightCenterY);
+                    path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
+                            highLightCenterY - arrowWidth / 2);
+                    path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
+                            highLightCenterY + arrowWidth / 2);
+                    path.close();
+                }
             }
             break;
             case BOTTOM: {
@@ -581,18 +595,19 @@ public class ShowCaseLayout extends FrameLayout {
 
                 int highLightCenterX = (highlightXend + highlightXstart) / 2;
 
-                int recalcArrowWidth = arrowWidth;
-                if (highLightCenterX < 2* this.spacing ||
-                        highLightCenterX > (getWidth() - 2* this.spacing)) {
-                    recalcArrowWidth = arrowWidth/2;
+                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
+                if (recalcArrowWidth == 0) {
+                    path = null;
                 }
-                path = new Path();
-                path.moveTo(highLightCenterX, highlightYend + this.arrowMargin);
-                path.lineTo(highLightCenterX - recalcArrowWidth / 2,
-                        highlightYend + this.spacing + this.arrowMargin);
-                path.lineTo(highLightCenterX + recalcArrowWidth / 2,
-                        highlightYend + this.spacing + this.arrowMargin);
-                path.close();
+                else {
+                    path = new Path();
+                    path.moveTo(highLightCenterX, highlightYend + this.arrowMargin);
+                    path.lineTo(highLightCenterX - recalcArrowWidth / 2,
+                            highlightYend + this.spacing + this.arrowMargin);
+                    path.lineTo(highLightCenterX + recalcArrowWidth / 2,
+                            highlightYend + this.spacing + this.arrowMargin);
+                    path.close();
+                }
             }
             break;
             case TOP: {
@@ -608,24 +623,37 @@ public class ShowCaseLayout extends FrameLayout {
 
                 int highLightCenterX = (highlightXend + highlightXstart) / 2;
 
-                int recalcArrowWidth = arrowWidth;
-                if (highLightCenterX < 2* this.spacing ||
-                        highLightCenterX > (getWidth() - 2* this.spacing)) {
-                    recalcArrowWidth = arrowWidth/2;
+                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
+                if (recalcArrowWidth == 0) {
+                    path = null;
                 }
-                path = new Path();
-                path.moveTo(highLightCenterX, highlightYstart - this.arrowMargin);
-                path.lineTo(highLightCenterX - recalcArrowWidth / 2,
-                        highlightYstart - this.spacing - this.arrowMargin);
-                path.lineTo(highLightCenterX + recalcArrowWidth / 2,
-                        highlightYstart - this.spacing - this.arrowMargin);
-                path.close();
+                else {
+                    path = new Path();
+                    path.moveTo(highLightCenterX, highlightYstart - this.arrowMargin);
+                    path.lineTo(highLightCenterX - recalcArrowWidth / 2,
+                            highlightYstart - this.spacing - this.arrowMargin);
+                    path.lineTo(highLightCenterX + recalcArrowWidth / 2,
+                            highlightYstart - this.spacing - this.arrowMargin);
+                    path.close();
+                }
             }
             break;
             case UNDEFINED:
                 moveViewToCenter();
                 break;
         }
+    }
+
+    private int getRecalculateArrowWidth(int highlightCenter, int maxWidthOrHeight) {
+        int recalcArrowWidth = arrowWidth;
+        if (highlightCenter < 2* this.spacing ||
+                highlightCenter > ( maxWidthOrHeight - 2* this.spacing)) {
+            recalcArrowWidth = 0;
+        } else if (highlightCenter < 3* this.spacing ||
+                highlightCenter > (maxWidthOrHeight - 3* this.spacing)) {
+            recalcArrowWidth = arrowWidth/2;
+        }
+        return recalcArrowWidth;
     }
 
     private void moveViewToCenter() {

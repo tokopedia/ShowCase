@@ -8,7 +8,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/rectangle_rounded">
     <android.support.v7.widget.AppCompatTextView
-        android:padding="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
