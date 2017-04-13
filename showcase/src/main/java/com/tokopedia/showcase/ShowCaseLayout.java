@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.ViewUtils;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -163,7 +164,8 @@ public class ShowCaseLayout extends FrameLayout {
                              int currentTutorIndex,
                              int tutorsListSize,
                              ShowCaseContentPosition showCaseContentPosition,
-                             int tintBackgroundColor) {
+                             int tintBackgroundColor,
+                             final int[] customTarget, final int radius) {
         boolean isStart = currentTutorIndex == 0;
 
         this.isLast = currentTutorIndex == tutorsListSize - 1;
@@ -213,10 +215,7 @@ public class ShowCaseLayout extends FrameLayout {
             moveViewToCenter();
         }
         else {
-            final int[] location = new int[2];
             this.lastTutorialView = view;
-            view.getLocationInWindow(location);
-
             view.setDrawingCacheEnabled(true);
             view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
             if (tintBackgroundColor == 0) {
@@ -235,8 +234,20 @@ public class ShowCaseLayout extends FrameLayout {
                 this.bitmap = bigBitmap;
             }
 
-            this.highlightLocX = location[0];
-            this.highlightLocY = location[1] - getStatusBarHeight();
+            //set custom target to view
+            if (customTarget!= null) {
+                this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget, radius);
+
+                this.highlightLocX = customTarget[0] - radius;
+                this.highlightLocY = customTarget[1] - radius;
+            }
+            else { // use view location as target
+                final int[] location = new int[2];
+                view.getLocationInWindow(location);
+
+                this.highlightLocX = location[0];
+                this.highlightLocY = location[1] - ViewHelper.getStatusBarHeight(getContext());
+            }
 
             this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -569,11 +580,17 @@ public class ShowCaseLayout extends FrameLayout {
                 this.viewGroup.setLayoutParams(layoutParams);
 
                 int highLightCenterX = (highlightXend + highlightXstart) / 2;
+
+                int recalcArrowWidth = arrowWidth;
+                if (highLightCenterX < 2* this.spacing ||
+                        highLightCenterX > (getWidth() - 2* this.spacing)) {
+                    recalcArrowWidth = arrowWidth/2;
+                }
                 path = new Path();
                 path.moveTo(highLightCenterX, highlightYend + this.arrowMargin);
-                path.lineTo(highLightCenterX - arrowWidth / 2,
+                path.lineTo(highLightCenterX - recalcArrowWidth / 2,
                         highlightYend + this.spacing + this.arrowMargin);
-                path.lineTo(highLightCenterX + arrowWidth / 2,
+                path.lineTo(highLightCenterX + recalcArrowWidth / 2,
                         highlightYend + this.spacing + this.arrowMargin);
                 path.close();
             }
@@ -590,11 +607,17 @@ public class ShowCaseLayout extends FrameLayout {
                 this.viewGroup.setLayoutParams(layoutParams);
 
                 int highLightCenterX = (highlightXend + highlightXstart) / 2;
+
+                int recalcArrowWidth = arrowWidth;
+                if (highLightCenterX < 2* this.spacing ||
+                        highLightCenterX > (getWidth() - 2* this.spacing)) {
+                    recalcArrowWidth = arrowWidth/2;
+                }
                 path = new Path();
                 path.moveTo(highLightCenterX, highlightYstart - this.arrowMargin);
-                path.lineTo(highLightCenterX - arrowWidth / 2,
+                path.lineTo(highLightCenterX - recalcArrowWidth / 2,
                         highlightYstart - this.spacing - this.arrowMargin);
-                path.lineTo(highLightCenterX + arrowWidth / 2,
+                path.lineTo(highLightCenterX + recalcArrowWidth / 2,
                         highlightYstart - this.spacing - this.arrowMargin);
                 path.close();
             }
@@ -651,14 +674,5 @@ public class ShowCaseLayout extends FrameLayout {
         }
         this.lastTutorialView = null;
         this.viewPaint = null;
-    }
-
-    private int getStatusBarHeight() {
-        int height = 0;
-        int resId = this.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resId > 0) {
-            height = this.getContext().getResources().getDimensionPixelSize(resId);
-        }
-        return height;
     }
 }

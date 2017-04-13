@@ -1,8 +1,6 @@
 package com.tokopedia.showcase.sample;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +9,7 @@ import android.view.View;
 import com.tokopedia.showcase.ShowCaseBuilder;
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
-import com.tokopedia.showcase.ShowCasePreference;
+import com.tokopedia.showcase.ShowCaseObject;
 
 import java.util.ArrayList;
 
@@ -86,8 +84,8 @@ public class ScrollShowCaseActivity extends AppCompatActivity
             return;
         }*/
 
-        ArrayList <ShowCaseDialog.ShowCaseObject> showCaseList = new ArrayList<>();
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        ArrayList <ShowCaseObject> showCaseList = new ArrayList<>();
+        showCaseList.add(new ShowCaseObject(
                 text1,
                 null,
                 "Text Example 1",
@@ -95,7 +93,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text2,
                 null,
                 "Text Example 2",
@@ -103,7 +101,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text3,
                 null,
                 "Text Example 3",
@@ -111,7 +109,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text4,
                 null,
                 "Text Example 4",
@@ -119,7 +117,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text5,
                 null,
                 "Text Example 5",
@@ -127,7 +125,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text6,
                 null,
                 "Text Example 6",
@@ -135,7 +133,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text7,
                 null,
                 "Text Example 7",
@@ -143,7 +141,7 @@ public class ScrollShowCaseActivity extends AppCompatActivity
                 0,
                 scrollView));
 
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 text8,
                 null,
                 "Text Example 8",

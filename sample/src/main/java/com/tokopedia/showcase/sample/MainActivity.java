@@ -8,12 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.View;
 
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
 import com.tokopedia.showcase.ShowCaseBuilder;
-import com.tokopedia.showcase.ShowCasePreference;
+import com.tokopedia.showcase.ShowCaseObject;
 
 import java.util.ArrayList;
 
@@ -55,6 +56,12 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     private void initViews() {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,22 +96,24 @@ public class MainActivity extends AppCompatActivity
             return;
         }*/
 
-        ArrayList <ShowCaseDialog.ShowCaseObject> showCaseList = new ArrayList<>();
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        ArrayList <ShowCaseObject> showCaseList = new ArrayList<>();
+
+
+        showCaseList.add(new ShowCaseObject(
                 toolbar,
                 null,
                 "Above is the <b>toolbar</b>.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
 
         // using title
         // use position to left
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 fab,
                 "This is example Title",
                 "This description point to <font color=\"#FF0000\"> Floating Action Button </font> on the right.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere.",
                 ShowCaseContentPosition.LEFT));
 
         // without using views
-        showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+        showCaseList.add(new ShowCaseObject(
                 null,
                 null,
                 "This is example without anchored View.<br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suo enim quisque studio maxime ducitur. Scio enim esse quosdam, qui quavis lingua philosophari possint; Animum autem reliquis rebus ita perfecit, ut corpus; Quo modo autem optimum, si bonum praeterea nullum est? Dicet pro me ipsa virtus nec dubitabit isti vestro beato M. Sic enim censent, oportunitatis esse beate vivere."));
@@ -114,32 +123,43 @@ public class MainActivity extends AppCompatActivity
 
         if (itemView!= null) {
             // use background white
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+            showCaseList.add(new ShowCaseObject(
                     itemView,
                     null,
                     "This is item in the recyclerView",
                     ShowCaseContentPosition.UNDEFINED,
                     Color.WHITE));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+            showCaseList.add(new ShowCaseObject(
                     itemView.findViewById(R.id.iv_icon),
                     null,
                     "This is icon"));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+            showCaseList.add(new ShowCaseObject(
                     itemView.findViewById(R.id.tv_title),
                     "Color Description",
                     "This describe the color. The white background is written in code. If it is not defined, default will be transparent",
                     ShowCaseContentPosition.UNDEFINED,
                     Color.WHITE));
 
-            showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+            showCaseList.add(new ShowCaseObject(
                     itemView.findViewById(R.id.iv_fav),
                     null,
                     "This is icon (2)",
                     ShowCaseContentPosition.LEFT,
                     Color.WHITE));
         }
+
+        int radius = toolbar.getHeight() / 2;
+        showCaseList.add(
+                new ShowCaseObject(
+                    findViewById(android.R.id.content),
+                    "Show case using custom target",
+                    "Menu item is highlighted using custom target",
+                    ShowCaseContentPosition.UNDEFINED,
+                    Color.WHITE)
+                .withCustomTarget(new int[]{ toolbar.getWidth() - radius, radius}
+                                                    , radius) );
 
         // make the dialog show
         showCaseDialog.show(this,SHOWCASE_TAG,  showCaseList);

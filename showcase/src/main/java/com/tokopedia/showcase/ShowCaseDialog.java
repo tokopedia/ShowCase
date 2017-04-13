@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
@@ -140,64 +141,6 @@ public class ShowCaseDialog extends DialogFragment {
         }
     }
 
-    public static class ShowCaseObject {
-
-        View view;
-        String title;
-        String text;
-        ShowCaseContentPosition showCaseContentPosition;
-        int tintBackgroundColor;
-        ViewGroup scrollView;
-
-        public ShowCaseObject(@Nullable View view, @Nullable String title, String text ) {
-            this(view, title, text, ShowCaseContentPosition.UNDEFINED);
-        }
-        public ShowCaseObject(@Nullable View view, @Nullable String title,
-                              String text, ShowCaseContentPosition showCaseContentPosition) {
-            this(view, title, text, showCaseContentPosition, 0);
-        }
-
-        public ShowCaseObject(@Nullable View view, @Nullable String title,
-                              String text, ShowCaseContentPosition showCaseContentPosition,
-                              int tintBackgroundColor) {
-            this(view, title, text, showCaseContentPosition, tintBackgroundColor, null);
-        }
-        public ShowCaseObject(@Nullable View view, @Nullable String title,
-                              String text, ShowCaseContentPosition showCaseContentPosition,
-                              int tintBackgroundColor, ViewGroup scrollView) {
-            this.view = view;
-            this.title = title;
-            this.text = text;
-            this.showCaseContentPosition = showCaseContentPosition;
-            this.tintBackgroundColor = tintBackgroundColor;
-            this.scrollView = scrollView;
-        }
-
-        public View getView() {
-            return view;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getText() {
-            return text;
-        }
-
-        public int getTintBackgroundColor() {
-            return tintBackgroundColor;
-        }
-
-        public ShowCaseContentPosition getShowCaseContentPosition() {
-            return showCaseContentPosition;
-        }
-
-        public ViewGroup getScrollView() {
-            return scrollView;
-        }
-    }
-
     public boolean hasShown (Activity activity, String tag){
         return ShowCasePreference.hasShown(activity, tag);
     }
@@ -271,11 +214,13 @@ public class ShowCaseDialog extends DialogFragment {
     }
 
     public void showLayout(Activity activity, ShowCaseObject showCaseObject){
-        final View view = showCaseObject.view;
-        final String title = showCaseObject.title;
-        final String text = showCaseObject.text;
-        final ShowCaseContentPosition showCaseContentPosition = showCaseObject.showCaseContentPosition;
-        final int tintBackgroundColor = showCaseObject.tintBackgroundColor;
+        final View view = showCaseObject.getView();
+        final String title = showCaseObject.getTitle();
+        final String text = showCaseObject.getText();
+        final ShowCaseContentPosition showCaseContentPosition = showCaseObject.getShowCaseContentPosition();
+        final int tintBackgroundColor = showCaseObject.getTintBackgroundColor();
+        final int[] location = showCaseObject.getLocation();
+        final int radius = showCaseObject.getRadius();
 
         FragmentManager fm = activity.getFragmentManager();
         if (!isVisible()) {
@@ -290,12 +235,14 @@ public class ShowCaseDialog extends DialogFragment {
         }
 
         if (view == null) {
-            layoutShowTutorial(null, title, text, showCaseContentPosition, tintBackgroundColor);
+            layoutShowTutorial(null, title, text, showCaseContentPosition,
+                    tintBackgroundColor, location, radius);
         } else {
             view.post(new Runnable() {
                 @Override
                 public void run() {
-                    layoutShowTutorial(view, title, text, showCaseContentPosition, tintBackgroundColor);
+                    layoutShowTutorial(view, title, text, showCaseContentPosition,
+                            tintBackgroundColor, location, radius);
                 }
             });
         }
@@ -309,16 +256,23 @@ public class ShowCaseDialog extends DialogFragment {
         layout.hideTutorial();
     }
 
-
-    private void layoutShowTutorial(View view,String title, String text,
-                                    ShowCaseContentPosition showCaseContentPosition,
-                                    int tintBackgroundColor){
+    private void layoutShowTutorial(final View view, final String title, final String text,
+                                    final ShowCaseContentPosition showCaseContentPosition,
+                                    final int tintBackgroundColor, final int[] customTarget, final int radius){
         final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
         if (layout == null) {
+            // wait until the layout is ready, and call itself
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    layoutShowTutorial( view, title, text,
+                            showCaseContentPosition, tintBackgroundColor, customTarget, radius);
+                }
+            },1000);
             return;
         }
         layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
-                showCaseContentPosition, tintBackgroundColor);
+                showCaseContentPosition, tintBackgroundColor, customTarget, radius);
     }
 
     public void close() {
