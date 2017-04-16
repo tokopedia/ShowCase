@@ -14,7 +14,7 @@ This library is used to showcase chain of views to guide the users about the fea
 </table>
 
 Dependencies
-====
+-------
 ```
 dependencies {
     compile "com.tokopedia.tkpdlib:showcase-stepper:0.5.7"
@@ -22,7 +22,7 @@ dependencies {
 ```
 
 Usage
-====
+-------
 
 First, create the `ShowCaseDialog`. Use Builder Pattern.
 
@@ -63,7 +63,7 @@ showCaseDialog.show(this, showCaseList);
 ```
 
 Item Customization
-====
+-------
 ```
 showCaseList.add(new ShowCaseObject(@Nullable View view, 
                                 @Nullable String title,
@@ -88,7 +88,7 @@ tintBackgroundColor (optional)
     to override the backgroundColor to the view. The default is transparent.
     
 Custom Target
-====
+-------
 ```
 showCaseList.add(
                 new ShowCaseObject(
@@ -101,7 +101,7 @@ showCaseList.add(
 Use ```.withCustomTarget``` to highlight circle area for the specific coordinate (x,y) and radius.
     
 Custom Layout Customization
-====
+-------
 ```java
 showCaseDialog = new ShowCaseBuilder()
     .customView(R.layout.customView)
