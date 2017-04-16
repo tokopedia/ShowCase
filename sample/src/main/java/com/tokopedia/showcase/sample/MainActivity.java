@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ViewUtils;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.tokopedia.showcase.ShowCaseContentPosition;
 import com.tokopedia.showcase.ShowCaseDialog;
 import com.tokopedia.showcase.ShowCaseBuilder;
 import com.tokopedia.showcase.ShowCaseObject;
+import com.tokopedia.showcase.ViewHelper;
 
 import java.util.ArrayList;
 
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity
     private LinearLayoutManager llm;
 
     public static final String SHOWCASE_TAG = "sample_showcase_tag";
+    private View buttonShowCase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +60,6 @@ public class MainActivity extends AppCompatActivity
                 .build();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
     private void initViews() {
         this.toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,7 +73,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        View buttonShowCase = findViewById(R.id.button_show_case);
+        buttonShowCase = findViewById(R.id.button_show_case);
         buttonShowCase.setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity
             return;
         }*/
 
-        ArrayList <ShowCaseObject> showCaseList = new ArrayList<>();
+        final ArrayList <ShowCaseObject> showCaseList = new ArrayList<>();
 
 
         showCaseList.add(new ShowCaseObject(
@@ -150,19 +148,30 @@ public class MainActivity extends AppCompatActivity
                     Color.WHITE));
         }
 
-        int radius = toolbar.getHeight() / 2;
+        int[] location = new int[2];
+        buttonShowCase.getLocationInWindow(location);
+
+        int xStart = location[0];
+        int yStart = location[1];
+        int xEnd = location[0]+ buttonShowCase.getWidth();
+        int yEnd = location[1]+buttonShowCase.getHeight();
+        int xCenter = ( xStart + xEnd ) /2;
+        int yCenter = ( yStart + yEnd ) /2- ViewHelper.getStatusBarHeight(this);
+        int radius = buttonShowCase.getWidth() * 2 / 3;
+
         showCaseList.add(
                 new ShowCaseObject(
-                    findViewById(android.R.id.content),
-                    "Show case using custom target",
-                    "Menu item is highlighted using custom target",
-                    ShowCaseContentPosition.UNDEFINED,
-                    Color.WHITE)
-                .withCustomTarget(new int[]{ toolbar.getWidth() - radius, radius}
-                                                    , radius) );
+                        findViewById(android.R.id.content),
+                        "Show case using custom target",
+                        "This is highlighted using custom target",
+                        ShowCaseContentPosition.UNDEFINED,
+                        Color.WHITE)
+                        .withCustomTarget(new int[]{ xCenter, yCenter}
+                                , radius) );
 
         // make the dialog show
-        showCaseDialog.show(this,SHOWCASE_TAG,  showCaseList);
+        showCaseDialog.show(MainActivity.this   ,SHOWCASE_TAG,  showCaseList);
+
     }
 
 }
