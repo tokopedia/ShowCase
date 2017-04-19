@@ -2,10 +2,27 @@
 
 This library is used to showcase chain of views to guide the users about the feature on the screen.
 
-<img src="record showcase.gif?raw=true" alt="" width="240" />
+<table>
+    <tr>
+        <td>
+        <img src="showcase1.gif?raw=true" alt="" width="240" />
+        </td>
+        <td>
+        <img src="showcase2.gif?raw=true" alt="" width="240" />
+        </td>
+    </tr>
+</table>
+
+Dependencies
+-------
+```
+dependencies {
+    compile "com.tokopedia.tkpdlib:showcase-stepper:0.5.7"
+}
+```
 
 Usage
-====
+-------
 
 First, create the `ShowCaseDialog`. Use Builder Pattern.
 
@@ -33,12 +50,12 @@ After the dialog has been created, provide the `ArrayList` of `ShowCaseObject`
 As an example to showcase 2 views:
 
 ```
-ArrayList <ShowCaseDialog.ShowCaseObject> showCaseList = new ArrayList<>();
-showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+ArrayList <ShowCaseObject> showCaseList = new ArrayList<>();
+showCaseList.add(new ShowCaseObject(
         viewToHighLight,
         "Title",
         "Description"));
-showCaseList.add(new ShowCaseDialog.ShowCaseObject(
+showCaseList.add(new ShowCaseObject(
         view2,
         null,
         "Description 2");
@@ -46,9 +63,9 @@ showCaseDialog.show(this, showCaseList);
 ```
 
 Item Customization
-====
+-------
 ```
-showCaseList.add(new ShowCaseDialog.ShowCaseObject(@Nullable View view, 
+showCaseList.add(new ShowCaseObject(@Nullable View view, 
                                 @Nullable String title,
                                 String text, 
                                 ShowCaseContentPosition showCaseContentPosition,
@@ -70,15 +87,28 @@ position (optional)
 tintBackgroundColor (optional) 
     to override the backgroundColor to the view. The default is transparent.
     
+Custom Target
+-------
+```
+showCaseList.add(
+                new ShowCaseObject(
+                        findViewById(android.R.id.content),
+                        "Show case using custom target",
+                        "This is highlighted using custom target")
+                        .withCustomTarget(new int[]{ xCenter, yCenter}
+                                , radius) );
+```
+Use ```.withCustomTarget``` to highlight circle area for the specific coordinate (x,y) and radius.
+    
 Custom Layout Customization
-====
+-------
 ```java
 showCaseDialog = new ShowCaseBuilder()
     .customView(R.layout.customView)
     .build();
 ```
 
-Note that the customView should have the same ID to use default functionality
+Note: To use most of default functionality, the views in the custom layout should have the same id with the R.layout.tutorial_view.xml
 
 License
 -------
