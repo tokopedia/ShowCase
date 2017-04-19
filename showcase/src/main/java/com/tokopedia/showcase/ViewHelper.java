@@ -64,6 +64,38 @@ public class ViewHelper {
         return output;
     }
 
+    public static Bitmap getCroppedBitmap(Bitmap bitmap, int rectLocation[]) {
+        int xStart = rectLocation[0];
+        int yStart = rectLocation[1];
+        int xEnd = rectLocation[2];
+        int yEnd = rectLocation[3];
+        int width = xEnd - xStart;
+        int height = yEnd - yStart;
+
+        Bitmap output = Bitmap.createBitmap(width,
+                height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+
+        Rect sourceRect = new Rect(xStart,
+                yStart,
+                xEnd,
+                yEnd);
+        Rect destRect = new Rect(0,0,width, height);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRect(destRect, paint);
+//        canvas.drawCircle(radius, radius,
+//                radius, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, sourceRect, destRect, paint);
+        return output;
+    }
+
     public static int getStatusBarHeight(Context context) {
         int height = 0;
         int resId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");

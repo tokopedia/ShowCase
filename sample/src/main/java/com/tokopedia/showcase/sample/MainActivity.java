@@ -152,22 +152,31 @@ public class MainActivity extends AppCompatActivity
         buttonShowCase.getLocationInWindow(location);
 
         int xStart = location[0];
-        int yStart = location[1];
+        int yStart = location[1]- ViewHelper.getStatusBarHeight(this);
         int xEnd = location[0]+ buttonShowCase.getWidth();
-        int yEnd = location[1]+buttonShowCase.getHeight();
+        int yEnd = location[1]+buttonShowCase.getHeight()- ViewHelper.getStatusBarHeight(this);
         int xCenter = ( xStart + xEnd ) /2;
-        int yCenter = ( yStart + yEnd ) /2- ViewHelper.getStatusBarHeight(this);
+        int yCenter = ( yStart + yEnd ) /2;
         int radius = buttonShowCase.getWidth() * 2 / 3;
 
         showCaseList.add(
                 new ShowCaseObject(
                         findViewById(android.R.id.content),
-                        "Show case using custom target",
+                        "Show case using circle custom target",
                         "This is highlighted using custom target",
                         ShowCaseContentPosition.UNDEFINED,
                         Color.WHITE)
                         .withCustomTarget(new int[]{ xCenter, yCenter}
                                 , radius) );
+
+        showCaseList.add(
+                new ShowCaseObject(
+                        findViewById(android.R.id.content),
+                        "Show case using rectangle custom target",
+                        "This is highlighted using custom target",
+                        ShowCaseContentPosition.UNDEFINED,
+                        Color.WHITE)
+                        .withCustomTarget(new int[]{ xStart - 20, yStart - 20, xEnd + 20, yEnd + 20}) );
 
         // make the dialog show
         showCaseDialog.show(MainActivity.this   ,SHOWCASE_TAG,  showCaseList);

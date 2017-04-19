@@ -236,7 +236,12 @@ public class ShowCaseLayout extends FrameLayout {
 
             //set custom target to view
             if (customTarget!= null) {
-                this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget, radius);
+                if (customTarget.length == 2) {
+                    this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget, radius);
+                }
+                else if (customTarget.length == 4) {
+                    this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget);
+                }
 
                 this.highlightLocX = customTarget[0] - radius;
                 this.highlightLocY = customTarget[1] - radius;

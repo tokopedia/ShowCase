@@ -60,8 +60,19 @@ public class ShowCaseObject {
     private int[] location;
     private int radius;
     public ShowCaseObject withCustomTarget(int[] location, int radius){
+        if (location.length != 2) {
+            return this;
+        }
         this.location = location;
         this.radius = radius;
+        return this;
+    }
+
+    public ShowCaseObject withCustomTarget(int[] location){
+        if (location.length!= 4) {
+            return this;
+        }
+        this.location = location;
         return this;
     }
 
