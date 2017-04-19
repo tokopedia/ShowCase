@@ -99,6 +99,15 @@ showCaseList.add(
                                 , radius) );
 ```
 Use ```.withCustomTarget``` to highlight circle area for the specific coordinate (x,y) and radius.
+
+showCaseList.add(
+                new ShowCaseObject(
+                        findViewById(android.R.id.content),
+                        "Show case using custom target",
+                        "This is highlighted using custom target")
+                        .withCustomTarget(new int[]{ left, top, right, bottom} ) );
+```
+Use ```.withCustomTarget``` to highlight rectangle area for the specific coordinate (x,y) and radius.
     
 Custom Layout Customization
 -------
