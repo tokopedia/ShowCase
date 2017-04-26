@@ -20,6 +20,7 @@ public class ShowCaseBuilder implements Parcelable {
     private boolean useCircleIndicator = true;
     private boolean clickable = false;
     private boolean useArrow = true;
+    private int arrowWidth;
 
     public ShowCaseBuilder customView(int customViewRes) {
         this.layoutRes = customViewRes;
@@ -58,6 +59,11 @@ public class ShowCaseBuilder implements Parcelable {
 
     public ShowCaseBuilder spacingRes(int spacingRes) {
         this.spacingRes = spacingRes;
+        return this;
+    }
+
+    public ShowCaseBuilder arrowWidth(int arrowWidth) {
+        this.arrowWidth = arrowWidth;
         return this;
     }
 
@@ -149,6 +155,10 @@ public class ShowCaseBuilder implements Parcelable {
         return layoutRes;
     }
 
+    public int getArrowWidth() {
+        return arrowWidth;
+    }
+
     public int getSpacingRes() {
         return spacingRes;
     }
@@ -169,6 +179,7 @@ public class ShowCaseBuilder implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.layoutRes);
+        dest.writeInt(this.titleTextColorRes);
         dest.writeInt(this.textColorRes);
         dest.writeInt(this.shadowColorRes);
         dest.writeInt(this.titleTextSizeRes);
@@ -181,6 +192,8 @@ public class ShowCaseBuilder implements Parcelable {
         dest.writeInt(this.finishStringRes);
         dest.writeByte(this.useCircleIndicator ? (byte) 1 : (byte) 0);
         dest.writeByte(this.clickable ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.useArrow ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.arrowWidth);
     }
 
     public ShowCaseBuilder() {
@@ -188,6 +201,7 @@ public class ShowCaseBuilder implements Parcelable {
 
     protected ShowCaseBuilder(Parcel in) {
         this.layoutRes = in.readInt();
+        this.titleTextColorRes = in.readInt();
         this.textColorRes = in.readInt();
         this.shadowColorRes = in.readInt();
         this.titleTextSizeRes = in.readInt();
@@ -200,6 +214,8 @@ public class ShowCaseBuilder implements Parcelable {
         this.finishStringRes = in.readInt();
         this.useCircleIndicator = in.readByte() != 0;
         this.clickable = in.readByte() != 0;
+        this.useArrow = in.readByte() != 0;
+        this.arrowWidth = in.readInt();
     }
 
     public static final Parcelable.Creator<ShowCaseBuilder> CREATOR = new Parcelable.Creator<ShowCaseBuilder>() {

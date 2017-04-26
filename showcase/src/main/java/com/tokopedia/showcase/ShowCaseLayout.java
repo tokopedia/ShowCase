@@ -429,7 +429,13 @@ public class ShowCaseLayout extends FrameLayout {
 
         this.isCancelable = builder.isClickable();
 
-        if (!builder.isUseArrow()) {
+        if (builder.isUseArrow()) {
+            this.arrowMargin = this.spacing / 3;
+            this.arrowWidth = builder.getArrowWidth() != 0 ?
+                    (int) getResources().getDimension(builder.getArrowWidth())
+                    : this.arrowWidth;
+        }
+        else {
             this.arrowMargin = 0;
             this.arrowWidth = 0;
         }
