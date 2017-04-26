@@ -37,6 +37,8 @@ public class ViewHelper {
         } else if (background instanceof GradientDrawable) {
             GradientDrawable gradientDrawable = (GradientDrawable)background;
             gradientDrawable.setColor(color);
+        } else {
+            v.setBackgroundColor(color);
         }
     }
 

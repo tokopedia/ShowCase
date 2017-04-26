@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initShowCaseDialog() {
         showCaseDialog = new ShowCaseBuilder()
+                .titleTextColorRes(android.R.color.white)
                 .textColorRes(android.R.color.white)
                 .shadowColorRes(R.color.shadow)
                 .titleTextSizeRes(R.dimen.text_title)
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity
                 .finishStringRes(R.string.finish)
                 .useCircleIndicator(true)
                 .clickable(true)
+                .useArrow(true)
                 .build();
     }
 

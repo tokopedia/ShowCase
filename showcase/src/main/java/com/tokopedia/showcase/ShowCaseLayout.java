@@ -30,6 +30,7 @@ public class ShowCaseLayout extends FrameLayout {
     // customized attribute
     private int layoutRes;
     private int textColor;
+    private int titleTextColor;
     private int shadowColor;
     private float textSize;
     private float textTitleSize;
@@ -130,12 +131,11 @@ public class ShowCaseLayout extends FrameLayout {
         }
     }
 
-    private void onNextClicked(){
+    private void onNextClicked() {
         if (showCaseListener != null) {
             if (this.isLast) {
                 ShowCaseLayout.this.showCaseListener.onComplete();
-            }
-            else {
+            } else {
                 ShowCaseLayout.this.showCaseListener.onNext();
             }
         }
@@ -158,6 +158,8 @@ public class ShowCaseLayout extends FrameLayout {
         this.showCaseListener = showCaseListener;
     }
 
+    boolean isCalculatingBound = false;
+
     public void showTutorial(View view,
                              String title,
                              String text,
@@ -166,6 +168,8 @@ public class ShowCaseLayout extends FrameLayout {
                              ShowCaseContentPosition showCaseContentPosition,
                              int tintBackgroundColor,
                              final int[] customTarget, final int radius) {
+        isCalculatingBound = true;
+
         boolean isStart = currentTutorIndex == 0;
 
         this.isLast = currentTutorIndex == tutorsListSize - 1;
@@ -180,15 +184,14 @@ public class ShowCaseLayout extends FrameLayout {
 
         if (TextUtils.isEmpty(title)) {
             textViewTitle.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             textViewTitle.setText(Html.fromHtml(title));
             textViewTitle.setVisibility(View.VISIBLE);
         }
 
         textViewDesc.setText(Html.fromHtml(text));
 
-        if (prevButton!= null) {
+        if (prevButton != null) {
             if (isStart) {
                 prevButton.setVisibility(View.INVISIBLE);
             } else {
@@ -196,11 +199,10 @@ public class ShowCaseLayout extends FrameLayout {
             }
         }
 
-        if (nextButton!= null) {
+        if (nextButton != null) {
             if (isLast) {
                 nextButton.setText(finishString);
-            }
-            else if (currentTutorIndex < tutorsListSize - 1) { // has next
+            } else if (currentTutorIndex < tutorsListSize - 1) { // has next
                 nextButton.setText(nextString);
             }
         }
@@ -213,15 +215,14 @@ public class ShowCaseLayout extends FrameLayout {
             this.highlightLocX = 0;
             this.highlightLocY = 0;
             moveViewToCenter();
-        }
-        else {
+            isCalculatingBound = false;
+        } else {
             this.lastTutorialView = view;
             view.setDrawingCacheEnabled(true);
             view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
             if (tintBackgroundColor == 0) {
                 this.bitmap = view.getDrawingCache();
-            }
-            else {
+            } else {
                 Bitmap bitmapTemp = view.getDrawingCache();
 
                 Bitmap bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(),
@@ -235,18 +236,16 @@ public class ShowCaseLayout extends FrameLayout {
             }
 
             //set custom target to view
-            if (customTarget!= null) {
+            if (customTarget != null) {
                 if (customTarget.length == 2) {
                     this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget, radius);
-                }
-                else if (customTarget.length == 4) {
+                } else if (customTarget.length == 4) {
                     this.bitmap = ViewHelper.getCroppedBitmap(bitmap, customTarget);
                 }
 
                 this.highlightLocX = customTarget[0] - radius;
                 this.highlightLocY = customTarget[1] - radius;
-            }
-            else { // use view location as target
+            } else { // use view location as target
                 final int[] location = new int[2];
                 view.getLocationInWindow(location);
 
@@ -257,7 +256,7 @@ public class ShowCaseLayout extends FrameLayout {
             this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    moveViewBasedHighlight( ShowCaseLayout.this.highlightLocX,
+                    moveViewBasedHighlight(ShowCaseLayout.this.highlightLocX,
                             ShowCaseLayout.this.highlightLocY,
                             ShowCaseLayout.this.highlightLocX + ShowCaseLayout.this.bitmap.getWidth(),
                             ShowCaseLayout.this.highlightLocY + ShowCaseLayout.this.bitmap.getHeight());
@@ -268,6 +267,7 @@ public class ShowCaseLayout extends FrameLayout {
                         ShowCaseLayout.this.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
                     postInvalidate();
+                    isCalculatingBound = false;
                 }
             });
         }
@@ -275,14 +275,14 @@ public class ShowCaseLayout extends FrameLayout {
         this.setVisibility(View.VISIBLE);
     }
 
-    public void hideTutorial(){
+    public void hideTutorial() {
         this.setVisibility(View.INVISIBLE);
     }
 
     private void makeCircleIndicator(boolean hasMoreOneCircle,
                                      int currentTutorIndex,
-                                     int tutorsListSize){
-        if (useCircleIndicator && this.viewGroupIndicator!= null) {
+                                     int tutorsListSize) {
+        if (useCircleIndicator && this.viewGroupIndicator != null) {
             if (hasMoreOneCircle) { // has more than 1 circle
                 // already has circle indicator
                 if (this.viewGroupIndicator.getChildCount() == tutorsListSize) {
@@ -290,19 +290,17 @@ public class ShowCaseLayout extends FrameLayout {
                         View viewCircle = this.viewGroupIndicator.getChildAt(i);
                         if (i == currentTutorIndex) {
                             viewCircle.setSelected(true);
-                        }
-                        else {
+                        } else {
                             viewCircle.setSelected(false);
                         }
                     }
-                }
-                else { //reinitialize, the size is different
+                } else { //reinitialize, the size is different
                     this.viewGroupIndicator.removeAllViews();
                     LayoutInflater inflater = LayoutInflater.from(getContext());
                     for (int i = 0; i < tutorsListSize; i++) {
                         View viewCircle = inflater.inflate(R.layout.circle_green_view,
-                                            viewGroupIndicator,
-                                            false);
+                                viewGroupIndicator,
+                                false);
                         viewCircle.setBackgroundResource(this.circleBackgroundDrawableRes);
                         if (i == currentTutorIndex) {
                             viewCircle.setSelected(true);
@@ -310,8 +308,7 @@ public class ShowCaseLayout extends FrameLayout {
                         this.viewGroupIndicator.addView(viewCircle);
                     }
                 }
-            }
-            else {
+            } else {
                 this.viewGroupIndicator.removeAllViews();
             }
         }
@@ -337,6 +334,10 @@ public class ShowCaseLayout extends FrameLayout {
 
     @Override
     public void onDraw(Canvas canvas) {
+        if (isCalculatingBound) {
+            return;
+        }
+
         super.onDraw(canvas);
         if (bitmap == null) {
             return;
@@ -355,13 +356,15 @@ public class ShowCaseLayout extends FrameLayout {
         this.layoutRes = R.layout.tutorial_view;
 
         this.textColor = Color.WHITE;
+        this.titleTextColor = Color.WHITE;
         this.textTitleSize = getResources().getDimension(R.dimen.text_title);
         this.textSize = getResources().getDimension(R.dimen.text_normal);
 
         this.shadowColor = ContextCompat.getColor(context, R.color.shadow);
         this.spacing = (int) getResources().getDimension(R.dimen.spacing_normal);
+
         this.arrowMargin = this.spacing / 3;
-        this.arrowWidth = 2* this.spacing;
+        this.arrowWidth = (int) (1.5 * this.spacing );
 
         this.backgroundContentColor = Color.BLACK;
         this.circleBackgroundDrawableRes = R.drawable.selector_circle_green;
@@ -381,6 +384,10 @@ public class ShowCaseLayout extends FrameLayout {
         this.textColor = builder.getTextColorRes() != 0 ?
                 ContextCompat.getColor(context, builder.getTextColorRes())
                 : this.textColor;
+
+        this.titleTextColor = builder.getTitleTextColorRes() != 0 ?
+                ContextCompat.getColor(context, builder.getTitleTextColorRes())
+                : this.titleTextColor;
 
         this.textTitleSize = builder.getTitleTextSizeRes() != 0 ?
                 getResources().getDimension(builder.getTitleTextSizeRes())
@@ -421,6 +428,12 @@ public class ShowCaseLayout extends FrameLayout {
         this.useCircleIndicator = builder.useCircleIndicator();
 
         this.isCancelable = builder.isClickable();
+
+        if (!builder.isUseArrow()) {
+            this.arrowMargin = 0;
+            this.arrowWidth = 0;
+        }
+
     }
 
     private void initContent(Context context) {
@@ -433,7 +446,7 @@ public class ShowCaseLayout extends FrameLayout {
         textViewTitle = (TextView) viewGroupTutorContent.findViewById(R.id.text_title);
 
         textViewTitle = (TextView) viewGroupTutorContent.findViewById(R.id.text_title);
-        textViewTitle.setTextColor(this.textColor);
+        textViewTitle.setTextColor(this.titleTextColor);
         textViewTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textTitleSize);
 
         textViewDesc = (TextView) viewGroupTutorContent.findViewById(R.id.text_description);
@@ -448,7 +461,7 @@ public class ShowCaseLayout extends FrameLayout {
 
         viewGroupIndicator = (ViewGroup) viewGroupTutorContent.findViewById(R.id.view_group_indicator);
 
-        if (prevButton!=null) {
+        if (prevButton != null) {
             prevButton.setText(prevString);
             prevButton.setTextColor(this.textColor);
             prevButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSize);
@@ -461,7 +474,7 @@ public class ShowCaseLayout extends FrameLayout {
                 }
             });
         }
-        if (nextButton!=null) {
+        if (nextButton != null) {
             nextButton.setTextColor(this.textColor);
             nextButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSize);
             nextButton.setOnClickListener(new OnClickListener() {
@@ -494,8 +507,7 @@ public class ShowCaseLayout extends FrameLayout {
                 // if bottom is bigger, put to bottom, else put it on top
                 if ((this.getHeight() - highlightYend) > highlightYstart) {
                     showCaseContentPosition = ShowCaseContentPosition.BOTTOM;
-                }
-                else {
+                } else {
                     showCaseContentPosition = ShowCaseContentPosition.TOP;
                 }
             }
@@ -528,21 +540,22 @@ public class ShowCaseLayout extends FrameLayout {
 
                 this.viewGroup.setLayoutParams(layoutParams);
 
-                int highLightCenterY = (highlightYend + highlightYstart)/2;
-
-                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
-
-                if (recalcArrowWidth == 0) {
+                if (arrowWidth == 0) {
                     path = null;
-                }
-                else {
-                    path = new Path();
-                    path.moveTo(highlightXend + this.arrowMargin, highLightCenterY);
-                    path.lineTo(highlightXend + this.spacing + this.arrowMargin,
-                            highLightCenterY - arrowWidth / 2);
-                    path.lineTo(highlightXend + this.spacing + this.arrowMargin,
-                            highLightCenterY + arrowWidth / 2);
-                    path.close();
+                } else {
+                    int highLightCenterY = (highlightYend + highlightYstart) / 2;
+                    int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
+                    if (recalcArrowWidth == 0) {
+                        path = null;
+                    } else {
+                        path = new Path();
+                        path.moveTo(highlightXend + this.arrowMargin, highLightCenterY);
+                        path.lineTo(highlightXend + this.spacing ,
+                                highLightCenterY - arrowWidth / 2);
+                        path.lineTo(highlightXend + this.spacing ,
+                                highLightCenterY + arrowWidth / 2);
+                        path.close();
+                    }
                 }
             }
             break;
@@ -571,19 +584,22 @@ public class ShowCaseLayout extends FrameLayout {
 
                 this.viewGroup.setLayoutParams(layoutParams);
 
-                int highLightCenterY = (highlightYend + highlightYstart)/2;
-                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
-                if (recalcArrowWidth == 0) {
+                if (arrowWidth == 0) {
                     path = null;
-                }
-                else {
-                    path = new Path();
-                    path.moveTo(highlightXstart - this.arrowMargin, highLightCenterY);
-                    path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
-                            highLightCenterY - arrowWidth / 2);
-                    path.lineTo(highlightXstart - this.spacing - this.arrowMargin,
-                            highLightCenterY + arrowWidth / 2);
-                    path.close();
+                } else {
+                    int highLightCenterY = (highlightYend + highlightYstart) / 2;
+                    int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterY, getHeight());
+                    if (recalcArrowWidth == 0) {
+                        path = null;
+                    } else {
+                        path = new Path();
+                        path.moveTo(highlightXstart - this.arrowMargin, highLightCenterY);
+                        path.lineTo(highlightXstart - this.spacing ,
+                                highLightCenterY - arrowWidth / 2);
+                        path.lineTo(highlightXstart - this.spacing ,
+                                highLightCenterY + arrowWidth / 2);
+                        path.close();
+                    }
                 }
             }
             break;
@@ -598,20 +614,22 @@ public class ShowCaseLayout extends FrameLayout {
 
                 this.viewGroup.setLayoutParams(layoutParams);
 
-                int highLightCenterX = (highlightXend + highlightXstart) / 2;
-
-                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
-                if (recalcArrowWidth == 0) {
+                if (arrowWidth == 0) {
                     path = null;
-                }
-                else {
-                    path = new Path();
-                    path.moveTo(highLightCenterX, highlightYend + this.arrowMargin);
-                    path.lineTo(highLightCenterX - recalcArrowWidth / 2,
-                            highlightYend + this.spacing + this.arrowMargin);
-                    path.lineTo(highLightCenterX + recalcArrowWidth / 2,
-                            highlightYend + this.spacing + this.arrowMargin);
-                    path.close();
+                } else {
+                    int highLightCenterX = (highlightXend + highlightXstart) / 2;
+                    int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
+                    if (recalcArrowWidth == 0) {
+                        path = null;
+                    } else {
+                        path = new Path();
+                        path.moveTo(highLightCenterX, highlightYend + this.arrowMargin);
+                        path.lineTo(highLightCenterX - recalcArrowWidth / 2,
+                                highlightYend + this.spacing );
+                        path.lineTo(highLightCenterX + recalcArrowWidth / 2,
+                                highlightYend + this.spacing );
+                        path.close();
+                    }
                 }
             }
             break;
@@ -626,20 +644,22 @@ public class ShowCaseLayout extends FrameLayout {
 
                 this.viewGroup.setLayoutParams(layoutParams);
 
-                int highLightCenterX = (highlightXend + highlightXstart) / 2;
-
-                int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
-                if (recalcArrowWidth == 0) {
+                if (arrowWidth == 0) {
                     path = null;
-                }
-                else {
-                    path = new Path();
-                    path.moveTo(highLightCenterX, highlightYstart - this.arrowMargin);
-                    path.lineTo(highLightCenterX - recalcArrowWidth / 2,
-                            highlightYstart - this.spacing - this.arrowMargin);
-                    path.lineTo(highLightCenterX + recalcArrowWidth / 2,
-                            highlightYstart - this.spacing - this.arrowMargin);
-                    path.close();
+                } else {
+                    int highLightCenterX = (highlightXend + highlightXstart) / 2;
+                    int recalcArrowWidth = getRecalculateArrowWidth(highLightCenterX, getWidth());
+                    if (recalcArrowWidth == 0) {
+                        path = null;
+                    } else {
+                        path = new Path();
+                        path.moveTo(highLightCenterX, highlightYstart - this.arrowMargin);
+                        path.lineTo(highLightCenterX - recalcArrowWidth / 2,
+                                highlightYstart - this.spacing );
+                        path.lineTo(highLightCenterX + recalcArrowWidth / 2,
+                                highlightYstart - this.spacing );
+                        path.close();
+                    }
                 }
             }
             break;
@@ -651,12 +671,10 @@ public class ShowCaseLayout extends FrameLayout {
 
     private int getRecalculateArrowWidth(int highlightCenter, int maxWidthOrHeight) {
         int recalcArrowWidth = arrowWidth;
-        if (highlightCenter < 2* this.spacing ||
-                highlightCenter > ( maxWidthOrHeight - 2* this.spacing)) {
+        int safeArrowWidth = this.spacing + (arrowWidth / 2);
+        if (highlightCenter < safeArrowWidth ||
+                highlightCenter > (maxWidthOrHeight - safeArrowWidth)) {
             recalcArrowWidth = 0;
-        } else if (highlightCenter < 3* this.spacing ||
-                highlightCenter > (maxWidthOrHeight - 3* this.spacing)) {
-            recalcArrowWidth = arrowWidth/2;
         }
         return recalcArrowWidth;
     }
@@ -680,18 +698,16 @@ public class ShowCaseLayout extends FrameLayout {
 
     private void checkMarginTopBottom(int expectedTopMargin,
                                       LayoutParams layoutParams,
-                                      int viewHeight){
+                                      int viewHeight) {
         if (expectedTopMargin < this.spacing) {
             layoutParams.topMargin = this.spacing;
-        }
-        else {
+        } else {
             // check bottom margin. bottom should not out of window
             int prevActualHeight = expectedTopMargin + viewHeight + this.spacing;
             if (prevActualHeight > getHeight()) {
                 int diff = prevActualHeight - getHeight();
                 layoutParams.topMargin = expectedTopMargin - diff;
-            }
-            else {
+            } else {
                 layoutParams.topMargin = expectedTopMargin;
             }
         }

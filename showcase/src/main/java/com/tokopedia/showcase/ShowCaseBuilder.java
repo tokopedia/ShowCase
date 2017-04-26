@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class ShowCaseBuilder implements Parcelable {
 
     private int layoutRes;
+    private int titleTextColorRes;
     private int textColorRes;
     private int shadowColorRes;
     private int titleTextSizeRes;
@@ -18,6 +19,7 @@ public class ShowCaseBuilder implements Parcelable {
     private int finishStringRes;
     private boolean useCircleIndicator = true;
     private boolean clickable = false;
+    private boolean useArrow = true;
 
     public ShowCaseBuilder customView(int customViewRes) {
         this.layoutRes = customViewRes;
@@ -29,8 +31,18 @@ public class ShowCaseBuilder implements Parcelable {
         return this;
     }
 
+    public ShowCaseBuilder titleTextColorRes(int titleTextColorRes) {
+        this.titleTextColorRes = titleTextColorRes;
+        return this;
+    }
+
     public ShowCaseBuilder shadowColorRes(int shadowColorRes) {
         this.shadowColorRes = shadowColorRes;
+        return this;
+    }
+
+    public ShowCaseBuilder useArrow(boolean useArrow) {
+        this.useArrow = useArrow;
         return this;
     }
 
@@ -89,6 +101,10 @@ public class ShowCaseBuilder implements Parcelable {
         return textColorRes;
     }
 
+    public int getTitleTextColorRes() {
+        return titleTextColorRes;
+    }
+
     public int getTitleTextSizeRes() {
         return titleTextSizeRes;
     }
@@ -123,6 +139,10 @@ public class ShowCaseBuilder implements Parcelable {
 
     public int getCircleIndicatorBackgroundDrawableRes() {
         return circleIndicatorBackgroundDrawableRes;
+    }
+
+    public boolean isUseArrow() {
+        return useArrow;
     }
 
     public int getLayoutRes() {
