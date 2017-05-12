@@ -40,10 +40,12 @@ public class ShowCaseLayout extends FrameLayout {
     private boolean useCircleIndicator;
 
     private boolean isCancelable;
+    private boolean hasSkipWord;
 
     private String prevString;
     private String nextString;
     private String finishString;
+    private String skipString;
 
     private int backgroundContentColor;
     private int circleBackgroundDrawableRes;
@@ -63,6 +65,7 @@ public class ShowCaseLayout extends FrameLayout {
     private int highlightLocY;
 
     // determined if this is last chain
+    private boolean isStart;
     private boolean isLast;
 
     // path for arrow
@@ -158,8 +161,6 @@ public class ShowCaseLayout extends FrameLayout {
         this.showCaseListener = showCaseListener;
     }
 
-    boolean isCalculatingBound = false;
-
     public void showTutorial(View view,
                              String title,
                              String text,
@@ -168,9 +169,8 @@ public class ShowCaseLayout extends FrameLayout {
                              ShowCaseContentPosition showCaseContentPosition,
                              int tintBackgroundColor,
                              final int[] customTarget, final int radius) {
-        isCalculatingBound = true;
 
-        boolean isStart = currentTutorIndex == 0;
+        this.isStart = currentTutorIndex == 0;
 
         this.isLast = currentTutorIndex == tutorsListSize - 1;
         this.showCaseContentPosition = showCaseContentPosition;
@@ -193,8 +193,14 @@ public class ShowCaseLayout extends FrameLayout {
 
         if (prevButton != null) {
             if (isStart) {
-                prevButton.setVisibility(View.INVISIBLE);
+                if (hasSkipWord) {
+                    prevButton.setText(skipString);
+                    prevButton.setVisibility(View.VISIBLE);
+                } else {
+                    prevButton.setVisibility(View.INVISIBLE);
+                }
             } else {
+                prevButton.setText(prevString);
                 prevButton.setVisibility(View.VISIBLE);
             }
         }
@@ -215,7 +221,6 @@ public class ShowCaseLayout extends FrameLayout {
             this.highlightLocX = 0;
             this.highlightLocY = 0;
             moveViewToCenter();
-            isCalculatingBound = false;
         } else {
             this.lastTutorialView = view;
             view.setDrawingCacheEnabled(true);
@@ -266,8 +271,7 @@ public class ShowCaseLayout extends FrameLayout {
                     } else {
                         ShowCaseLayout.this.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     }
-                    postInvalidate();
-                    isCalculatingBound = false;
+                    invalidate();
                 }
             });
         }
@@ -334,19 +338,14 @@ public class ShowCaseLayout extends FrameLayout {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (isCalculatingBound) {
-            return;
-        }
-
-        super.onDraw(canvas);
         if (bitmap == null) {
             return;
         }
-
+        super.onDraw(canvas);
         canvas.drawBitmap(this.bitmap, this.highlightLocX, this.highlightLocY, viewPaint);
 
         // drawArrow
-        if (path != null) {
+        if (path != null && this.viewGroup.getVisibility() == View.VISIBLE ) {
             canvas.drawPath(path, arrowPaint);
         }
     }
@@ -372,6 +371,7 @@ public class ShowCaseLayout extends FrameLayout {
         this.prevString = getContext().getString(R.string.previous);
         this.nextString = getContext().getString(R.string.next);
         this.finishString = getContext().getString(R.string.finish);
+        this.skipString = getContext().getString(R.string.skip);
 
         if (builder == null) {
             return;
@@ -425,7 +425,12 @@ public class ShowCaseLayout extends FrameLayout {
                 getContext().getString(builder.getFinishStringRes())
                 : this.finishString;
 
+        this.skipString = builder.getSkipStringRes() != 0 ?
+                getContext().getString(builder.getSkipStringRes())
+                : this.skipString;
+
         this.useCircleIndicator = builder.useCircleIndicator();
+        this.hasSkipWord = builder.isUseSkipWord();
 
         this.isCancelable = builder.isClickable();
 
@@ -477,7 +482,11 @@ public class ShowCaseLayout extends FrameLayout {
                 @Override
                 public void onClick(View v) {
                     if (showCaseListener != null) {
-                        ShowCaseLayout.this.showCaseListener.onPrevious();
+                        if (ShowCaseLayout.this.isStart && hasSkipWord) {
+                            ShowCaseLayout.this.showCaseListener.onComplete();
+                        } else {
+                            ShowCaseLayout.this.showCaseListener.onPrevious();
+                        }
                     }
                 }
             });
@@ -546,7 +555,7 @@ public class ShowCaseLayout extends FrameLayout {
                 int expectedTopMargin = highlightYstart + diffHeight / 2;
                 checkMarginTopBottom(expectedTopMargin, layoutParams, viewGroupHeight);
 
-                this.viewGroup.setLayoutParams(layoutParams);
+                setLayoutViewGroup(layoutParams);
 
                 if (arrowWidth == 0) {
                     path = null;
@@ -590,7 +599,7 @@ public class ShowCaseLayout extends FrameLayout {
                 int expectedTopMargin = highlightYstart + diffHeight / 2;
                 checkMarginTopBottom(expectedTopMargin, layoutParams, viewGroupHeight);
 
-                this.viewGroup.setLayoutParams(layoutParams);
+                setLayoutViewGroup(layoutParams);
 
                 if (arrowWidth == 0) {
                     path = null;
@@ -620,7 +629,7 @@ public class ShowCaseLayout extends FrameLayout {
                 layoutParams.rightMargin = this.spacing;
                 layoutParams.bottomMargin = 0;
 
-                this.viewGroup.setLayoutParams(layoutParams);
+                setLayoutViewGroup(layoutParams);
 
                 if (arrowWidth == 0) {
                     path = null;
@@ -650,7 +659,7 @@ public class ShowCaseLayout extends FrameLayout {
                 layoutParams.leftMargin = this.spacing;
                 layoutParams.rightMargin = this.spacing;
 
-                this.viewGroup.setLayoutParams(layoutParams);
+                setLayoutViewGroup(layoutParams);
 
                 if (arrowWidth == 0) {
                     path = null;
@@ -677,6 +686,20 @@ public class ShowCaseLayout extends FrameLayout {
         }
     }
 
+    private void setLayoutViewGroup(LayoutParams params){
+        this.viewGroup.setVisibility(View.INVISIBLE);
+
+        this.viewGroup.addOnLayoutChangeListener(new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                ShowCaseLayout.this.viewGroup.setVisibility(View.VISIBLE);
+                ShowCaseLayout.this.viewGroup.removeOnLayoutChangeListener(this);
+            }
+        });
+        this.viewGroup.setLayoutParams(params);
+        invalidate();
+    }
+
     private int getRecalculateArrowWidth(int highlightCenter, int maxWidthOrHeight) {
         int recalcArrowWidth = arrowWidth;
         int safeArrowWidth = this.spacing + (arrowWidth / 2);
@@ -699,8 +722,7 @@ public class ShowCaseLayout extends FrameLayout {
         layoutParams.bottomMargin = this.spacing;
         layoutParams.topMargin = this.spacing;
 
-        this.viewGroup.setLayoutParams(layoutParams);
-
+        setLayoutViewGroup(layoutParams);
         this.path = null;
     }
 

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
                 .useCircleIndicator(true)
                 .clickable(true)
                 .useArrow(true)
+                .useSkipWord(true)
                 .build();
     }
 

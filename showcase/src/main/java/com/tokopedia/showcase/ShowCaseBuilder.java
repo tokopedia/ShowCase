@@ -22,6 +22,9 @@ public class ShowCaseBuilder implements Parcelable {
     private boolean useArrow = true;
     private int arrowWidth;
 
+    private int skipStringRes;
+    private boolean useSkipWord;
+
     public ShowCaseBuilder customView(int customViewRes) {
         this.layoutRes = customViewRes;
         return this;
@@ -44,6 +47,11 @@ public class ShowCaseBuilder implements Parcelable {
 
     public ShowCaseBuilder useArrow(boolean useArrow) {
         this.useArrow = useArrow;
+        return this;
+    }
+
+    public ShowCaseBuilder useSkipWord(boolean useSkipWord) {
+        this.useSkipWord = useSkipWord;
         return this;
     }
 
@@ -92,6 +100,11 @@ public class ShowCaseBuilder implements Parcelable {
         return this;
     }
 
+    public ShowCaseBuilder skipStringRes(int skipStringRes) {
+        this.skipStringRes = skipStringRes;
+        return this;
+    }
+
 
     public ShowCaseBuilder clickable(boolean clickable) {
         this.clickable = clickable;
@@ -123,6 +136,10 @@ public class ShowCaseBuilder implements Parcelable {
         return nextStringRes;
     }
 
+    public int getSkipStringRes() {
+        return skipStringRes;
+    }
+
     public int getPrevStringRes() {
         return prevStringRes;
     }
@@ -149,6 +166,10 @@ public class ShowCaseBuilder implements Parcelable {
 
     public boolean isUseArrow() {
         return useArrow;
+    }
+
+    public boolean isUseSkipWord(){
+        return useSkipWord;
     }
 
     public int getLayoutRes() {
@@ -194,6 +215,8 @@ public class ShowCaseBuilder implements Parcelable {
         dest.writeByte(this.clickable ? (byte) 1 : (byte) 0);
         dest.writeByte(this.useArrow ? (byte) 1 : (byte) 0);
         dest.writeInt(this.arrowWidth);
+        dest.writeInt(this.skipStringRes);
+        dest.writeByte(this.useSkipWord ? (byte) 1 : (byte) 0);
     }
 
     public ShowCaseBuilder() {
@@ -216,6 +239,8 @@ public class ShowCaseBuilder implements Parcelable {
         this.clickable = in.readByte() != 0;
         this.useArrow = in.readByte() != 0;
         this.arrowWidth = in.readInt();
+        this.skipStringRes = in.readInt();
+        this.useSkipWord = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<ShowCaseBuilder> CREATOR = new Parcelable.Creator<ShowCaseBuilder>() {
