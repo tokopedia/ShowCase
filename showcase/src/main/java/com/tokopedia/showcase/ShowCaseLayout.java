@@ -460,7 +460,9 @@ public class ShowCaseLayout extends FrameLayout {
         textViewDesc.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.textSize);
 
         View line = viewGroupTutorContent.findViewById(R.id.view_line);
-        line.setBackgroundColor(textColor);
+        if (line!= null) {
+            line.setBackgroundColor(textColor);
+        }
 
         prevButton = (TextView) viewGroupTutorContent.findViewById(R.id.text_previous);
         nextButton = (TextView) viewGroupTutorContent.findViewById(R.id.text_next);
