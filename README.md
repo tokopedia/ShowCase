@@ -117,7 +117,7 @@ showCaseDialog = new ShowCaseBuilder()
     .build();
 ```
 
-Note: To use most of default functionality, the views in the custom layout should have the same id with the R.layout.tutorial_view.xml
+Note: To use most of default functionality, the views in the custom layout should correspond with the same id with the id in ```R.layout.tutorial_view.xml```
 
 License
 -------
