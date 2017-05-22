@@ -17,7 +17,7 @@ Dependencies
 -------
 ```
 dependencies {
-    compile "com.tokopedia.tkpdlib:showcase-stepper:0.5.7"
+    compile "com.tokopedia.tkpdlib:showcase-stepper:0.5.10"
 }
 ```
 
@@ -99,7 +99,7 @@ showCaseList.add(
                                 , radius) );
 ```
 Use ```.withCustomTarget``` to highlight circle area for the specific coordinate (x,y) and radius.
-
+```
 showCaseList.add(
                 new ShowCaseObject(
                         findViewById(android.R.id.content),
