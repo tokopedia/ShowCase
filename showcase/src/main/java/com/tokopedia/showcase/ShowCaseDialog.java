@@ -23,6 +23,7 @@ public class ShowCaseDialog extends DialogFragment {
     private static final String ARG_BUILDER = "BUILDER";
     public static final int DELAY_SCROLLING = 350;
     public static final String TAG = ShowCaseDialog.class.getSimpleName();
+    public static final int MAX_RETRY_LAYOUT = 3;
 
     private ArrayList<ShowCaseObject> tutorsList;
     private int currentTutorIndex = -1;
@@ -32,7 +33,10 @@ public class ShowCaseDialog extends DialogFragment {
     boolean hasViewGroupHandled = false;
 
     private OnShowCaseStepListener listener;
-    public interface OnShowCaseStepListener{
+
+    private int retryCounter = 0;
+
+    public interface OnShowCaseStepListener {
         /**
          * @param previousStep
          * @param nextStep
@@ -103,7 +107,7 @@ public class ShowCaseDialog extends DialogFragment {
             @Override
             public void onComplete() {
                 if (!TextUtils.isEmpty(tag)) {
-                    ShowCasePreference.setShown(getActivity(),tag, true);
+                    ShowCasePreference.setShown(getActivity(), tag, true);
                 }
                 ShowCaseDialog.this.close();
             }
@@ -112,21 +116,19 @@ public class ShowCaseDialog extends DialogFragment {
         setCancelable(builder.isClickable());
     }
 
-    public void next(){
-        if ((currentTutorIndex + 1 ) >= tutorsList.size()) {
+    public void next() {
+        if ((currentTutorIndex + 1) >= tutorsList.size()) {
             this.close();
-        }
-        else {
-            ShowCaseDialog.this.show(getActivity(),tag, tutorsList, currentTutorIndex + 1);
+        } else {
+            ShowCaseDialog.this.show(getActivity(), tag, tutorsList, currentTutorIndex + 1);
         }
     }
 
-    public void previous(){
+    public void previous() {
         if ((currentTutorIndex - 1) < 0) {
             currentTutorIndex = 0;
-        }
-        else {
-             ShowCaseDialog.this.show(getActivity(),tag, tutorsList, currentTutorIndex - 1);
+        } else {
+            ShowCaseDialog.this.show(getActivity(), tag, tutorsList, currentTutorIndex - 1);
         }
     }
 
@@ -141,15 +143,15 @@ public class ShowCaseDialog extends DialogFragment {
         }
     }
 
-    public boolean hasShown (Activity activity, String tag){
+    public boolean hasShown(Activity activity, String tag) {
         return ShowCasePreference.hasShown(activity, tag);
     }
 
-    public void show (Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList) {
-        show (activity, tag, tutorList, 0);
+    public void show(Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList) {
+        show(activity, tag, tutorList, 0);
     }
 
-    public void show (final Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList, int indexToShow) {
+    public void show(final Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList, int indexToShow) {
         this.tutorsList = tutorList;
         this.tag = tag;
         if (indexToShow < 0 || indexToShow >= tutorList.size()) {
@@ -159,8 +161,8 @@ public class ShowCaseDialog extends DialogFragment {
         currentTutorIndex = indexToShow;
 
         hasViewGroupHandled = false;
-        if (listener!= null) {
-            hasViewGroupHandled = listener.onShowCaseGoTo(previousIndex, currentTutorIndex,tutorList.get(currentTutorIndex) );
+        if (listener != null) {
+            hasViewGroupHandled = listener.onShowCaseGoTo(previousIndex, currentTutorIndex, tutorList.get(currentTutorIndex));
         }
 
         // has been handled by listener
@@ -168,7 +170,7 @@ public class ShowCaseDialog extends DialogFragment {
 
         final ShowCaseObject showCaseObject = tutorList.get(currentTutorIndex);
         final ViewGroup viewGroup = showCaseObject.getScrollView();
-        if (viewGroup!= null) {
+        if (viewGroup != null) {
             final View viewToFocus = showCaseObject.getView();
             if (viewToFocus != null) {
                 hideLayout();
@@ -186,8 +188,7 @@ public class ShowCaseDialog extends DialogFragment {
                                     showLayout(activity, showCaseObject);
                                 }
                             }, DELAY_SCROLLING);
-                        }
-                        else if (viewGroup instanceof NestedScrollView){
+                        } else if (viewGroup instanceof NestedScrollView) {
                             NestedScrollView scrollView = (NestedScrollView) viewGroup;
                             int relativeLocation[] = new int[2];
                             ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
@@ -202,18 +203,33 @@ public class ShowCaseDialog extends DialogFragment {
                     }
                 });
                 hasViewGroupHandled = true;
-            }
-            else {
+            } else {
                 hasViewGroupHandled = false;
             }
         }
 
         if (!hasViewGroupHandled) {
-            showLayout(activity, tutorsList.get(currentTutorIndex) );
+            showLayout(activity, tutorsList.get(currentTutorIndex));
         }
     }
 
-    public void showLayout(Activity activity, ShowCaseObject showCaseObject){
+    public void showLayout(Activity activity, ShowCaseObject showCaseObject) {
+        FragmentManager fm = activity.getFragmentManager();
+        if (!isVisible()) {
+            try {
+                if (!isAdded()) {
+                    show(fm, TAG);
+                } else if (isHidden()) {
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.show(ShowCaseDialog.this);
+                    ft.commit();
+                }
+            } catch (IllegalStateException e) {
+                // called in illegal state. just return.
+                return;
+            }
+        }
+
         final View view = showCaseObject.getView();
         final String title = showCaseObject.getTitle();
         final String text = showCaseObject.getText();
@@ -221,18 +237,6 @@ public class ShowCaseDialog extends DialogFragment {
         final int tintBackgroundColor = showCaseObject.getTintBackgroundColor();
         final int[] location = showCaseObject.getLocation();
         final int radius = showCaseObject.getRadius();
-
-        FragmentManager fm = activity.getFragmentManager();
-        if (!isVisible()) {
-            if (!isAdded()) {
-                show(fm, TAG);
-            }
-            else if (isHidden()){
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.show(ShowCaseDialog.this);
-                ft.commit();
-            }
-        }
 
         if (view == null) {
             layoutShowTutorial(null, title, text, showCaseContentPosition,
@@ -248,7 +252,7 @@ public class ShowCaseDialog extends DialogFragment {
         }
     }
 
-    public void hideLayout(){
+    public void hideLayout() {
         final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
         if (layout == null) {
             return;
@@ -258,19 +262,25 @@ public class ShowCaseDialog extends DialogFragment {
 
     private void layoutShowTutorial(final View view, final String title, final String text,
                                     final ShowCaseContentPosition showCaseContentPosition,
-                                    final int tintBackgroundColor, final int[] customTarget, final int radius){
+                                    final int tintBackgroundColor, final int[] customTarget, final int radius) {
         final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
         if (layout == null) {
+            if (retryCounter >= MAX_RETRY_LAYOUT) {
+                retryCounter = 0;
+                return;
+            }
             // wait until the layout is ready, and call itself
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    layoutShowTutorial( view, title, text,
+                    retryCounter++;
+                    layoutShowTutorial(view, title, text,
                             showCaseContentPosition, tintBackgroundColor, customTarget, radius);
                 }
-            },1000);
+            }, 1000);
             return;
         }
+        retryCounter = 0;
         layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
                 showCaseContentPosition, tintBackgroundColor, customTarget, radius);
     }
