@@ -30,4 +30,4 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-//apply from: rootProject.file('gradle/mvn-install-publish.gradle')
+apply from: rootProject.file('gradle/mvn-install-publish.gradle')
