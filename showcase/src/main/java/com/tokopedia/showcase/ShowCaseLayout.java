@@ -338,7 +338,7 @@ public class ShowCaseLayout extends FrameLayout {
 
     @Override
     public void onDraw(Canvas canvas) {
-        if (bitmap == null) {
+        if (bitmap == null || bitmap.isRecycled()) {
             return;
         }
         super.onDraw(canvas);
