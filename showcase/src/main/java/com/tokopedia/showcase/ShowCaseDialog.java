@@ -152,64 +152,70 @@ public class ShowCaseDialog extends DialogFragment {
     }
 
     public void show(final Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList, int indexToShow) {
-        this.tutorsList = tutorList;
-        this.tag = tag;
-        if (indexToShow < 0 || indexToShow >= tutorList.size()) {
-            indexToShow = 0;
-        }
-        int previousIndex = currentTutorIndex;
-        currentTutorIndex = indexToShow;
-
-        hasViewGroupHandled = false;
-        if (listener != null) {
-            hasViewGroupHandled = listener.onShowCaseGoTo(previousIndex, currentTutorIndex, tutorList.get(currentTutorIndex));
-        }
-
-        // has been handled by listener
-        if (hasViewGroupHandled) return;
-
-        final ShowCaseObject showCaseObject = tutorList.get(currentTutorIndex);
-        final ViewGroup viewGroup = showCaseObject.getScrollView();
-        if (viewGroup != null) {
-            final View viewToFocus = showCaseObject.getView();
-            if (viewToFocus != null) {
-                hideLayout();
-                viewGroup.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (viewGroup instanceof ScrollView) {
-                            ScrollView scrollView = (ScrollView) viewGroup;
-                            int relativeLocation[] = new int[2];
-                            ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
-                            scrollView.smoothScrollTo(0, relativeLocation[1]);
-                            scrollView.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showLayout(activity, showCaseObject);
-                                }
-                            }, DELAY_SCROLLING);
-                        } else if (viewGroup instanceof NestedScrollView) {
-                            NestedScrollView scrollView = (NestedScrollView) viewGroup;
-                            int relativeLocation[] = new int[2];
-                            ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
-                            scrollView.smoothScrollTo(0, relativeLocation[1]);
-                            scrollView.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showLayout(activity, showCaseObject);
-                                }
-                            }, DELAY_SCROLLING);
-                        }
-                    }
-                });
-                hasViewGroupHandled = true;
-            } else {
-                hasViewGroupHandled = false;
+        try {
+            this.tutorsList = tutorList;
+            this.tag = tag;
+            if (indexToShow < 0 || indexToShow >= tutorList.size()) {
+                indexToShow = 0;
             }
-        }
+            int previousIndex = currentTutorIndex;
+            currentTutorIndex = indexToShow;
 
-        if (!hasViewGroupHandled) {
-            showLayout(activity, tutorsList.get(currentTutorIndex));
+            hasViewGroupHandled = false;
+            if (listener != null) {
+                hasViewGroupHandled = listener.onShowCaseGoTo(previousIndex, currentTutorIndex, tutorList.get(currentTutorIndex));
+            }
+
+            // has been handled by listener
+            if (hasViewGroupHandled) return;
+
+            final ShowCaseObject showCaseObject = tutorList.get(currentTutorIndex);
+            final ViewGroup viewGroup = showCaseObject.getScrollView();
+            if (viewGroup != null) {
+                final View viewToFocus = showCaseObject.getView();
+                if (viewToFocus != null) {
+                    hideLayout();
+                    viewGroup.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (viewGroup instanceof ScrollView) {
+                                ScrollView scrollView = (ScrollView) viewGroup;
+                                int relativeLocation[] = new int[2];
+                                ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
+                                scrollView.smoothScrollTo(0, relativeLocation[1]);
+                                scrollView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showLayout(activity, showCaseObject);
+                                    }
+                                }, DELAY_SCROLLING);
+                            } else if (viewGroup instanceof NestedScrollView) {
+                                NestedScrollView scrollView = (NestedScrollView) viewGroup;
+                                int relativeLocation[] = new int[2];
+                                ViewHelper.getRelativePositionRec(viewToFocus, viewGroup, relativeLocation);
+                                scrollView.smoothScrollTo(0, relativeLocation[1]);
+                                scrollView.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showLayout(activity, showCaseObject);
+                                    }
+                                }, DELAY_SCROLLING);
+                            }
+                        }
+                    });
+                    hasViewGroupHandled = true;
+                } else {
+                    hasViewGroupHandled = false;
+                }
+            }
+
+            if (!hasViewGroupHandled) {
+                showLayout(activity, tutorsList.get(currentTutorIndex));
+            }
+        } catch (Exception e) {
+            // to Handle the unknown exception.
+            // Since this only for first guide, if any error appears, just don't show the guide
+            ShowCaseDialog.this.dismiss();
         }
     }
 
