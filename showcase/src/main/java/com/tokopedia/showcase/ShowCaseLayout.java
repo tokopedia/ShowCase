@@ -223,6 +223,9 @@ public class ShowCaseLayout extends FrameLayout {
             moveViewToCenter();
         } else {
             this.lastTutorialView = view;
+            if (view.willNotCacheDrawing()) {
+                view.setWillNotCacheDrawing(false);
+            }
             view.setDrawingCacheEnabled(true);
             view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
             if (tintBackgroundColor == 0) {
