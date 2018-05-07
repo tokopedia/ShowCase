@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
+
 public class ShowCaseDialog extends DialogFragment {
     private static final String ARG_BUILDER = "BUILDER";
     public static final int DELAY_SCROLLING = 350;
@@ -72,7 +73,7 @@ public class ShowCaseDialog extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final Dialog dialog = new Dialog(getActivity(), getTheme()) {
+        final Dialog dialog = new Dialog(getActivity(), R.style.ShowCase) {
             @Override
             public void onBackPressed() {
                 if (builder.isClickable()) {
