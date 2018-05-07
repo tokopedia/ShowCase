@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,9 @@ import android.view.Window;
 import android.widget.ScrollView;
 
 import java.util.ArrayList;
+
+import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
 
 public class ShowCaseDialog extends DialogFragment {
     private static final String ARG_BUILDER = "BUILDER";
@@ -72,7 +76,7 @@ public class ShowCaseDialog extends DialogFragment {
     @Override
     @NonNull
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        final Dialog dialog = new Dialog(getActivity(), getTheme()) {
+        final Dialog dialog = new Dialog(getActivity(), R.style.ShowCase) {
             @Override
             public void onBackPressed() {
                 if (builder.isClickable()) {
