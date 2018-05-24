@@ -168,7 +168,7 @@ public class ShowCaseLayout extends FrameLayout {
                              int tutorsListSize,
                              ShowCaseContentPosition showCaseContentPosition,
                              int tintBackgroundColor,
-                             final int[] customTarget, final int radius) {
+                             final int[] customTarget, final int radius) throws Throwable {
 
         this.isStart = currentTutorIndex == 0;
 
