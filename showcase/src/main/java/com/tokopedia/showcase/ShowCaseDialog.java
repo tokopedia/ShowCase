@@ -270,26 +270,32 @@ public class ShowCaseDialog extends DialogFragment {
     private void layoutShowTutorial(final View view, final String title, final String text,
                                     final ShowCaseContentPosition showCaseContentPosition,
                                     final int tintBackgroundColor, final int[] customTarget, final int radius) {
-        final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
-        if (layout == null) {
-            if (retryCounter >= MAX_RETRY_LAYOUT) {
-                retryCounter = 0;
+
+        try {
+            final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
+            if (layout == null) {
+                if (retryCounter >= MAX_RETRY_LAYOUT) {
+                    retryCounter = 0;
+                    return;
+                }
+                // wait until the layout is ready, and call itself
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        retryCounter++;
+                        layoutShowTutorial(view, title, text,
+                                showCaseContentPosition, tintBackgroundColor, customTarget, radius);
+                    }
+                }, 1000);
                 return;
             }
-            // wait until the layout is ready, and call itself
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    retryCounter++;
-                    layoutShowTutorial(view, title, text,
-                            showCaseContentPosition, tintBackgroundColor, customTarget, radius);
-                }
-            }, 1000);
-            return;
+            retryCounter = 0;
+            layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
+                    showCaseContentPosition, tintBackgroundColor, customTarget, radius);
+        } catch (Throwable t){
+            // do nothing
         }
-        retryCounter = 0;
-        layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
-                showCaseContentPosition, tintBackgroundColor, customTarget, radius);
+
     }
 
     public void close() {
