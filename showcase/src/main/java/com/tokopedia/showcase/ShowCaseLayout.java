@@ -264,17 +264,19 @@ public class ShowCaseLayout extends FrameLayout {
             this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    moveViewBasedHighlight(ShowCaseLayout.this.highlightLocX,
-                            ShowCaseLayout.this.highlightLocY,
-                            ShowCaseLayout.this.highlightLocX + ShowCaseLayout.this.bitmap.getWidth(),
-                            ShowCaseLayout.this.highlightLocY + ShowCaseLayout.this.bitmap.getHeight());
+                    if(ShowCaseLayout.this.bitmap != null) {
+                        moveViewBasedHighlight(ShowCaseLayout.this.highlightLocX,
+                                ShowCaseLayout.this.highlightLocY,
+                                ShowCaseLayout.this.highlightLocX + ShowCaseLayout.this.bitmap.getWidth(),
+                                ShowCaseLayout.this.highlightLocY + ShowCaseLayout.this.bitmap.getHeight());
 
-                    if (Build.VERSION.SDK_INT < 16) {
-                        ShowCaseLayout.this.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    } else {
-                        ShowCaseLayout.this.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        if (Build.VERSION.SDK_INT < 16) {
+                            ShowCaseLayout.this.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        } else {
+                            ShowCaseLayout.this.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        }
+                        invalidate();
                     }
-                    invalidate();
                 }
             });
         }
