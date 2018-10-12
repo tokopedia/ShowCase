@@ -185,11 +185,11 @@ public class ShowCaseLayout extends FrameLayout {
         if (TextUtils.isEmpty(title)) {
             textViewTitle.setVisibility(View.GONE);
         } else {
-            textViewTitle.setText(Html.fromHtml(title));
+            textViewTitle.setText(fromHtml(title));
             textViewTitle.setVisibility(View.VISIBLE);
         }
 
-        textViewDesc.setText(Html.fromHtml(text));
+        textViewDesc.setText(fromHtml(text));
 
         if (prevButton != null) {
             if (isStart) {
@@ -758,5 +758,13 @@ public class ShowCaseLayout extends FrameLayout {
         }
         this.lastTutorialView = null;
         this.viewPaint = null;
+    }
+
+    private Spanned fromHtml(String html){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            return Html.fromHtml(html);
+        }
     }
 }
