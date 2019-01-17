@@ -153,6 +153,9 @@ public class ShowCaseDialog extends DialogFragment {
     }
 
     public void show(final Activity activity, @Nullable String tag, final ArrayList<ShowCaseObject> tutorList, int indexToShow) {
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
         try {
             this.tutorsList = tutorList;
             this.tag = tag;
@@ -216,11 +219,18 @@ public class ShowCaseDialog extends DialogFragment {
         } catch (Exception e) {
             // to Handle the unknown exception.
             // Since this only for first guide, if any error appears, just don't show the guide
-            ShowCaseDialog.this.dismiss();
+            try {
+                ShowCaseDialog.this.dismiss();
+            } catch (Exception e2) {
+                // no op
+            }
         }
     }
 
     public void showLayout(Activity activity, ShowCaseObject showCaseObject) {
+        if (activity == null || activity.isFinishing()) {
+            return;
+        }
         FragmentManager fm = activity.getFragmentManager();
         if (!isVisible()) {
             try {
@@ -292,19 +302,23 @@ public class ShowCaseDialog extends DialogFragment {
             retryCounter = 0;
             layout.showTutorial(view, title, text, currentTutorIndex, tutorsList.size(),
                     showCaseContentPosition, tintBackgroundColor, customTarget, radius);
-        } catch (Throwable t){
+        } catch (Throwable t) {
             // do nothing
         }
 
     }
 
     public void close() {
-        dismiss();
-        final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
-        if (layout == null) {
-            return;
+        try {
+            dismiss();
+            final ShowCaseLayout layout = (ShowCaseLayout) ShowCaseDialog.this.getView();
+            if (layout == null) {
+                return;
+            }
+            layout.closeTutorial();
+        } catch (Exception e) {
+            // no op
         }
-        layout.closeTutorial();
     }
 
 }
