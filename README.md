@@ -17,7 +17,7 @@ Dependencies
 -------
 ```
 dependencies {
-    compile "com.tokopedia.tkpdlib:showcase-stepper:0.5.10"
+    implementation "com.tokopedia.tkpdlib:showcase-stepper:0.6.0"
 }
 ```
 
