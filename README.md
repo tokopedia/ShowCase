@@ -122,7 +122,7 @@ Note: To use most of default functionality, the views in the custom layout shoul
 License
 -------
 
-    Copyright 2017 Tokopedia
+    Copyright 2019 Tokopedia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
