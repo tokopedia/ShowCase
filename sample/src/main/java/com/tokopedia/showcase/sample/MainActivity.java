@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
 
     private void initShowCaseDialog() {
         showCaseDialog = new ShowCaseBuilder()
+                .setPackageName(getPackageName())
                 .titleTextColorRes(android.R.color.white)
                 .textColorRes(android.R.color.white)
                 .shadowColorRes(R.color.shadow)

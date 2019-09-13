@@ -21,9 +21,15 @@ public class ShowCaseBuilder implements Parcelable {
     private boolean clickable = false;
     private boolean useArrow = true;
     private int arrowWidth;
+    private String packageName;
 
     private int skipStringRes;
     private boolean useSkipWord;
+
+    public ShowCaseBuilder setPackageName(String packageName) {
+        this.packageName = packageName;
+        return this;
+    }
 
     public ShowCaseBuilder customView(int customViewRes) {
         this.layoutRes = customViewRes;
@@ -114,6 +120,10 @@ public class ShowCaseBuilder implements Parcelable {
     public ShowCaseBuilder useCircleIndicator(boolean useCircleIndicator) {
         this.useCircleIndicator = useCircleIndicator;
         return this;
+    }
+
+    public String getPackageName() {
+        return packageName;
     }
 
     public int getTextColorRes() {
