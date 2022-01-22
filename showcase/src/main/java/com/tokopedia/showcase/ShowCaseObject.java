@@ -1,8 +1,9 @@
 package com.tokopedia.showcase;
 
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.Nullable;
 
 /**
  * Created by Hendry on 4/13/2017.
