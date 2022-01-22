@@ -62,7 +62,7 @@ publishing {
 
                 def dependenciesNode = asNode().appendNode('dependencies')
 
-                configurations.compile.allDependencies.each {
+                configurations.implementation.allDependencies.each {
                     if (it.group != null && it.name != null) {
                         def dependencyNode = dependenciesNode.appendNode('dependency')
                         dependencyNode.appendNode('groupId', it.group)
