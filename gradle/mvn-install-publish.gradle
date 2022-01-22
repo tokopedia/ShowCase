@@ -1,5 +1,22 @@
 apply plugin: 'maven-publish'
 
+def pomConfig = {
+    licenses {
+        license {
+            name LICENSE_NAME
+            url LICENSE_URL
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id DEVELOPER_ID
+            name DEVELOPER_NAME
+            email DEVELOPER_EMAIL
+        }
+    }
+}
+
 if (project.hasProperty("android")) { // Android libraries
     task sourcesJar(type: Jar) {
         archiveClassifier.set('sources')
