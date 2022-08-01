@@ -9,9 +9,19 @@ on:
   push:
     # The branches below must be a subset of the branches above
     branches: [master]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.yml'
+      - '**/*.yaml'
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [master]
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+      - '**/*.yml'
+      - '**/*.yaml'
   workflow_dispatch:
 
 jobs:
@@ -49,7 +59,7 @@ jobs:
 
     - name: Set Up Python
       if: matrix.language == 'python'
-      uses: actions/setup-python@v3
+      uses: actions/setup-python@v4
       with:
         python-version: '3.x'
     # Initializes the CodeQL tools for scanning.
