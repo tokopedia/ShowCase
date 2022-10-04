@@ -11,13 +11,13 @@
     <FrameLayout
         android:layout_width="100dp"
         android:layout_height="wrap_content">
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_icon"
             android:layout_width="64dp"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            tools:src="@mipmap/ic_launcher"/>
+            tools:src="@mipmap/ic_launcher" />
     </FrameLayout>
 
     <LinearLayout
@@ -46,11 +46,12 @@
     <FrameLayout
         android:layout_width="64dp"
         android:layout_height="wrap_content">
-        <android.support.v7.widget.AppCompatImageView
+
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_fav"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_stats_fav"/>
+            android:src="@drawable/ic_stats_fav" />
     </FrameLayout>
 </LinearLayout>
